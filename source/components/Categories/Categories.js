@@ -11,7 +11,7 @@ export default class Categories extends Component {
   render() {
     return(
       <View style={Styles.container}>
-        <Text>This is the first screen of the project</Text>
+        <Text>This is the first screen of the Categories</Text>
       </View>
     )
   }
