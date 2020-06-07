@@ -28,12 +28,12 @@ const Header = props => {
               style={[Styles.headerIcon, {width: 20, height: 20}]}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Image
               source={require('../../assets/home1/cart_icon.png')}
               style={Styles.headerIcon}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity>
             <Image
               source={require('../../assets/home1/menu_icon.png')}

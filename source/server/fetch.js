@@ -7,10 +7,15 @@ export const base_url = 'https://www.georgiaphonecase.com/wp-json/wp/v2/media';
 let userName = 'ck_c52dde1216f4bb02c54ebbcbfe2a909d8af35f1b';
 let passsword = 'cs_9cfe48601f5942550bd0e012d5ea6d3a96bb07a4';
 
+const authParam = `consumer_key=${userName}&consumer_secret=${passsword}`;
+// const endpoint = 'products/categories?search=featured-products&';
+
+export const base_url2 = 'https://www.georgiaphonecase.com/wp-json/wc/v3/';
+
 let headers = new Headers();
 
 headers.append('Content-Type', 'application/json');
-headers.append('Authorization', 'Basic ' + userName + ':' + passsword);
+// headers.append('Authorization', 'Basic ' + userName + ':' + passsword);
 
 // export async function request() {
 //   try {
@@ -36,6 +41,13 @@ export const config = {
   credentials: 'include',
   redirect: 'follow',
 };
+
+export async function getCategory(endpoint) {
+  return await fetch(base_url2 + endpoint + authParam, config)
+    .then(res => res.json())
+    .then(data => data)
+    .catch(err => console.log(err));
+}
 
 export async function request() {
   let response = await fetch(base_url, {

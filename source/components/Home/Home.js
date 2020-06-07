@@ -10,28 +10,44 @@ import FeaturedProductSection from './FeaturedProductSection';
 import PopularPhoneSection from './PopularPhoneSection';
 import NewPhoneSection from './NewPhoneSection';
 
-import { base_url, config } from '../../server/fetch';
+import { base_url, config, base_url2, getCategory } from '../../server/fetch';
 import Styles from './Styles';
 
 export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      images: [
-        // require('../../assets/home1/slider.png'),
-        // 'https://source.unsplash.com/1024x768/?nature',
-        // 'https://source.unsplash.com/1024x768/?water',
-        // 'https://source.unsplash.com/1024x768/?girl',
-        // 'https://source.unsplash.com/1024x768/?tree',
-      ],
+      images: [],
+      featuredProducts: [],
     };
   }
 
   componentDidMount() {
-    fetch(base_url, config)
+    this.fetchBanner();
+    this.featuredProducts();
+  }
+
+  async featuredProducts() {
+    // await fetch(base_url2, config)
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     console.log(data[0].id);
+    //   })
+    //   .catch(err => console.log(err));
+    const response = await getCategory(
+      'products/categories?search=featured-products&',
+    );
+    const catId = response[0].id;
+    const data = await getCategory(`products?category=${catId}&`);
+    this.setState({ featuredProducts: data });
+    console.log(JSON.stringify(data));
+  }
+
+  async fetchBanner() {
+    await fetch(base_url, config)
       .then(res => res.json())
       .then(data => {
-        let tempImages = this.state.images
+        let tempImages = this.state.images;
 
         data.map((item, index) => {
           if (item.slug.includes('banner')) {
@@ -39,13 +55,15 @@ export default class Home extends Component {
             tempImages.push(item.guid.rendered);
           }
         });
-        console.log('temp image', tempImages)
-        this.setState({images: tempImages})
+        console.log('temp image', tempImages);
+        this.setState({ images: tempImages });
       })
       .catch(err => console.log(err));
   }
 
   render() {
+    const { featuredProducts } = this.state;
+
     return (
       <View style={Styles.container}>
         <Header />
@@ -79,7 +97,12 @@ export default class Home extends Component {
           <CategorySection />
           <View style={Styles.divider} />
 
-          <FeaturedProductSection />
+          {featuredProducts.length > 0 && (
+            <FeaturedProductSection
+              products={featuredProducts}
+              navigation={this.props.navigation}
+            />
+          )}
 
           <View style={Styles.bannerContainer}>
             <Image
