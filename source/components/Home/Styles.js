@@ -66,16 +66,24 @@ export default StyleSheet.create({
     marginHorizontal: moderateScale(20),
   },
   sectionHeaderContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderBottomColor: '#ebeff5',
     marginBottom: 10,
+  },
+  seeProductText: {
+    fontSize: moderateScale(16),
+    color: 'red',
+    marginRight: 20,
+    paddingBottom: 3,
   },
   sectionHeaderText: {
     fontSize: moderateScale(16),
     fontWeight: 'bold',
     color: 'grey',
     paddingBottom: 3,
-    marginHorizontal: moderateScale(20),
+    marginLeft: moderateScale(20),
   },
   featuredProductItem: {
     width: width / 2 - 30,

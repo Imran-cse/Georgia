@@ -6,14 +6,20 @@ import Categories from '../components/Categories/Categories';
 import Search from '../components/Search/Search';
 import Cart from '../components/Cart/Cart';
 import Account from '../components/Account/Account';
+import ProductDetails from '../components/Products/ProductDetail';
 
 const Stack = createStackNavigator();
 const options = { headerShown: false };
 
 export const HomeStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName='ProductDetails'>
       <Stack.Screen name="Home" component={Home} options={options} />
+      <Stack.Screen
+        name="ProductDetails"
+        component={ProductDetails}
+        options={options}
+      />
     </Stack.Navigator>
   );
 };
