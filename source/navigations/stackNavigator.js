@@ -13,7 +13,7 @@ const options = { headerShown: false };
 
 export const HomeStack = () => {
   return (
-    <Stack.Navigator initialRouteName='ProductDetails'>
+    <Stack.Navigator initialRouteName='Home'>
       <Stack.Screen name="Home" component={Home} options={options} />
       <Stack.Screen
         name="ProductDetails"

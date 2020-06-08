@@ -43,10 +43,25 @@ export const config = {
 };
 
 export async function getCategory(endpoint) {
-  return await fetch(base_url2 + endpoint + authParam, config)
-    .then(res => res.json())
-    .then(data => data)
-    .catch(err => console.log(err));
+  // return await fetch(base_url2 + endpoint + authParam, config)
+  //   .then(res => {
+  //     console.log('total result', res.headers.get('X-WP-Total'));
+  //     return res;
+  //   })
+  //   .then(data => {
+  //     return {
+  //       data: data.json(),
+  //       head: data.headers.get('X-WP-Total'),
+  //     };
+  //   })
+  //   .catch(err => console.log(err));
+
+  try {
+    const respones = await fetch(base_url2 + endpoint + authParam, config);
+    return respones;
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 export async function request() {

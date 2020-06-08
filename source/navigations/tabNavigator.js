@@ -2,6 +2,8 @@ import React from 'react';
 import { Image } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import Search from '../components/Search/Search'
+
 import {
   HomeStack,
   CategoryStack,
@@ -99,7 +101,7 @@ export const TabStack = () => {
       }}>
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Categories" component={CategoryStack} />
-      <Tab.Screen name="Search" component={SearchStack} />
+      <Tab.Screen name="Search" component={Search} />
       <Tab.Screen name="Cart" component={CartStack} />
       <Tab.Screen name="Account" component={AccountStack} />
     </Tab.Navigator>

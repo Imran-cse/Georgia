@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView, Image } from 'react-native';
 
-import { SearchBar } from 'react-native-elements';
+// import { SearchBar } from 'react-native-elements';
 import { SliderBox } from 'react-native-image-slider-box';
 
 import Header from './Header';
@@ -9,6 +9,7 @@ import CategorySection from './CategorySection';
 import FeaturedProductSection from './FeaturedProductSection';
 import PopularPhoneSection from './PopularPhoneSection';
 import NewPhoneSection from './NewPhoneSection';
+import SearchBar from '../Search/SerchBar';
 
 import { base_url, config, base_url2, getCategory } from '../../server/fetch';
 import Styles from './Styles';
@@ -19,6 +20,7 @@ export default class Home extends Component {
     this.state = {
       images: [],
       featuredProducts: [],
+      seacrText: undefined,
     };
   }
 
@@ -28,19 +30,18 @@ export default class Home extends Component {
   }
 
   async featuredProducts() {
-    // await fetch(base_url2, config)
-    //   .then(res => res.json())
-    //   .then(data => {
-    //     console.log(data[0].id);
-    //   })
-    //   .catch(err => console.log(err));
-    const response = await getCategory(
+    const result = await getCategory(
       'products/categories?search=featured-products&',
     );
+    const response = await Promise.resolve(result.json());
+    console.log('respones', JSON.stringify(response))
+    const head1 = result.headers.get('X-WP-Total');
+    console.log('head1: ', head1);
     const catId = response[0].id;
-    const data = await getCategory(`products?category=${catId}&`);
+    const result2 = await getCategory(`products?category=${catId}&`);
+    const data = await Promise.resolve(result2.json())
     this.setState({ featuredProducts: data });
-    console.log(JSON.stringify(data));
+    // console.log(JSON.stringify(data));
   }
 
   async fetchBanner() {
@@ -51,18 +52,18 @@ export default class Home extends Component {
 
         data.map((item, index) => {
           if (item.slug.includes('banner')) {
-            console.log(item.guid.rendered);
+            // console.log(item.guid.rendered);
             tempImages.push(item.guid.rendered);
           }
         });
-        console.log('temp image', tempImages);
+        // console.log('temp image', tempImages);
         this.setState({ images: tempImages });
       })
       .catch(err => console.log(err));
   }
 
   render() {
-    const { featuredProducts } = this.state;
+    const { featuredProducts, seacrText } = this.state;
 
     return (
       <View style={Styles.container}>
@@ -70,26 +71,7 @@ export default class Home extends Component {
 
         <ScrollView>
           <View style={{ marginHorizontal: 20, marginVertical: 10 }}>
-            <View style={Styles.serchWrapper}>
-              <SearchBar
-                placeholder="Search"
-                lightTheme={true}
-                inputContainerStyle={{
-                  backgroundColor: 'white',
-                  overflow: 'hidden',
-                  height: 35,
-                }}
-                containerStyle={{
-                  backgroundColor: 'white',
-                  paddingTop: 2,
-                  height: 35,
-                  borderBottomWidth: 0,
-                  borderTopWidth: 0,
-                  overflow: 'hidden',
-                }}
-                searchIcon={{ size: 25 }}
-              />
-            </View>
+            <SearchBar navigation={this.props.navigation} />
           </View>
 
           <SliderBox images={this.state.images} />

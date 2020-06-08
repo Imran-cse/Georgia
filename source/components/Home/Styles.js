@@ -26,14 +26,7 @@ export default StyleSheet.create({
     marginLeft: 10,
     resizeMode: 'contain',
   },
-  serchWrapper: {
-    borderWidth: 0.5,
-    borderColor: 'grey',
-    borderRadius: 10,
-    paddingVertical: 2,
-    paddingHorizontal: 8,
-    overflow: 'visible',
-  },
+
   categorySectionContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -164,4 +157,5 @@ export default StyleSheet.create({
     width: 150,
     resizeMode: 'contain',
   },
+ 
 });
