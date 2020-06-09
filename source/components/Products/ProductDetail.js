@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 
-import { Button, Rating } from 'react-native-elements';
+import { Button, Rating, Icon } from 'react-native-elements';
 import { Picker } from 'native-base';
 
 import ImageView from './ImageView';
@@ -23,8 +23,8 @@ export default class ProductDetails extends Component {
   }
 
   render() {
-    const { route } = this.props;
-    console.log(route)
+    const { route, navigation } = this.props;
+    console.log(route);
     const { product } = route.params;
 
     const { selectedImage, selectedValue } = this.state;
@@ -39,9 +39,23 @@ export default class ProductDetails extends Component {
     const rating = Number(product.average_rating);
 
     return (
-      <View style={{backgroundColor: 'white'}}>
+      <View style={{ backgroundColor: 'white', flex: 1 }}>
+        <View style={Styles.headerContainer}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon name="arrowleft" type="antdesign" color='red' />
+          </TouchableOpacity>
+          <View style={Styles.headerView}>
+            <TouchableOpacity style={{ paddingRight: 15 }}>
+              <Icon name="hearto" type="antdesign" size={20} color='red' />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <Icon name="menu" type="feather" color='red' />
+            </TouchableOpacity>
+          </View>
+        </View>
+
         <ScrollView>
-          <View style={Styles.productContainer}>
+          <View style={[Styles.productContainer, {marginTop: 0}]}>
             <ImageView
               images={product.images}
               selectedImage={selectedImage}

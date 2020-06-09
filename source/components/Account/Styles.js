@@ -3,7 +3,8 @@ import { verticalScale, moderateScale } from '../../constants/constant_functions
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    flex: 1
   },
   headerContainer: {
     backgroundColor: 'red',
@@ -31,5 +32,20 @@ export default StyleSheet.create({
   loginText: {
     fontSize: moderateScale(22),
     paddingLeft: moderateScale(20)
+  },
+  horizontalLine: {
+    height: 2,
+    backgroundColor: 'grey',
+    opacity: 0.5
+  },
+  itemView: {
+    flexDirection: 'row',
+    paddingHorizontal: moderateScale(20),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingTop: moderateScale(10)
+  },
+  itemText: {
+    fontSize: moderateScale(18)
   }
 })

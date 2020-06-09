@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 
 import { Icon } from 'react-native-elements';
 
@@ -27,6 +27,39 @@ export default class Account extends Component {
           </View>
           <Icon name="ios-arrow-forward" type="ionicon" />
         </TouchableOpacity>
+
+        <View style={Styles.horizontalLine} />
+
+        <ScrollView>
+          <TouchableOpacity style={Styles.itemView}>
+            <Text style={Styles.itemText}>My Profile</Text>
+            <Icon name="ios-arrow-forward" type="ionicon" />
+          </TouchableOpacity>
+          <TouchableOpacity style={Styles.itemView}>
+            <Text style={Styles.itemText}>My Messages</Text>
+            <Icon name="ios-arrow-forward" type="ionicon" />
+          </TouchableOpacity>
+          <TouchableOpacity style={Styles.itemView}>
+            <Text style={Styles.itemText}>My Orders</Text>
+            <Icon name="ios-arrow-forward" type="ionicon" />
+          </TouchableOpacity>
+          <TouchableOpacity style={Styles.itemView}>
+            <Text style={Styles.itemText}>Payment Method</Text>
+            <Icon name="ios-arrow-forward" type="ionicon" />
+          </TouchableOpacity>
+          <TouchableOpacity style={Styles.itemView}>
+            <Text style={Styles.itemText}>Shipping Address</Text>
+            <Icon name="ios-arrow-forward" type="ionicon" />
+          </TouchableOpacity>
+          <TouchableOpacity style={Styles.itemView}>
+            <Text style={Styles.itemText}>Customer Service</Text>
+            <Icon name="ios-arrow-forward" type="ionicon" />
+          </TouchableOpacity>
+          <TouchableOpacity style={Styles.itemView}>
+            <Text style={Styles.itemText}>Terms & Conditions</Text>
+            <Icon name="ios-arrow-forward" type="ionicon" />
+          </TouchableOpacity>
+        </ScrollView>
       </View>
     );
   }

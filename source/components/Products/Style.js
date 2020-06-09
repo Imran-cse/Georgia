@@ -87,7 +87,7 @@ export default StyleSheet.create({
     borderWidth: 1,
     width: 90,
     height: 42,
-    borderRadius: 10
+    borderRadius: 10,
   },
   pickerStyle: {
     // width: 30,
@@ -96,6 +96,21 @@ export default StyleSheet.create({
     marginRight: 0,
     marginBottom: 0,
     height: 43,
-    flexGrow: 0
-  }
+    flexGrow: 0,
+  },
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: moderateScale(20),
+    paddingTop: moderateScale(15),
+    paddingBottom: moderateScale(10),
+    alignItems: 'center'
+  },
+  headerView: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center'
+    // marginHorizontal: moderateScale(20),
+    // paddingTop: moderateScale(15)
+  },
 });

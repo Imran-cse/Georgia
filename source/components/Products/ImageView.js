@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 
 import Styles from './Style';
+import { Icon } from 'react-native-elements';
 
 const ImageView = props => {
   const { images, selectedImage } = props;
@@ -14,6 +15,7 @@ const ImageView = props => {
           source={{ uri: images[selectedImage].src }}
           style={Styles.image}
         />
+
       </View>
       <View
         style={{

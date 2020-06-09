@@ -13,18 +13,18 @@ export default class Categories extends Component {
 
   render() {
     return (
-      <View>
+      <View style={{backgroundColor: 'white', flex: 1}}>
         <Header />
 
         <View style={Styles.container}>
-          <View style={{ flexDirection: 'column',borderWidth: 1,  }}>
-            <View style={Styles.itemContainer}>
+          <View style={Styles.itemContainer}>
+            <View style={Styles.imageContainer}>
               <Image source={categories[0].image} style={Styles.imageStyle} />
             </View>
             <Text style={Styles.categoryText}>{categories[0].name}</Text>
           </View>
-          <View style={{ flexDirection: 'column' }}>
-            <View style={Styles.itemContainer}>
+          <View style={Styles.itemContainer}>
+            <View style={Styles.imageContainer}>
               <Image source={categories[0].image} style={Styles.imageStyle} />
             </View>
             <Text style={Styles.categoryText}>{categories[0].name}</Text>
