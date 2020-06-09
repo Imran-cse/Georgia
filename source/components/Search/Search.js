@@ -35,6 +35,7 @@ export default class Search extends Component {
 
         <View style={{flex: 1}}>
           <FlatList
+            numColumns={2}
             contentContainerStyle={Styles.resultContainer}
             data={data}
             renderItem={({ item }) => {
@@ -58,7 +59,7 @@ export default class Search extends Component {
                     <Text style={Styles.price}>$ {item.price}</Text>
                     <Rating
                       readonly
-                      startingValue={item.average_rating}
+                      startingValue={Number(item.average_rating)}
                       imageSize={10}
                     />
                   </View>
@@ -67,38 +68,6 @@ export default class Search extends Component {
             }}
           />
         </View>
-
-        {/* <ScrollView style={Styles.scrollView}>
-          <View style={Styles.resultContainer}>
-            {!!data &&
-              data.map((item, index) => (
-                <View style={Styles.itemContainer}>
-                  <TouchableOpacity
-                    onPress={() =>
-                      this.props.navigation.navigate('Home', {
-                        screen: 'ProductDetails',
-                        params: { product: item },
-                      })
-                    }
-                    style={Styles.imageWrapper}>
-                    <Image
-                      source={{ uri: item.images[0].src }}
-                      style={Styles.image}
-                    />
-                  </TouchableOpacity>
-                  <View style={{ alignItems: 'flex-start' }}>
-                    <Text numberOfLines={2}>{item.name}</Text>
-                    <Text style={Styles.price}>$ {item.price}</Text>
-                    <Rating
-                      readonly
-                      startingValue={item.average_rating}
-                      imageSize={10}
-                    />
-                  </View>
-                </View>
-              ))}
-          </View>
-        </ScrollView> */}
       </View>
     );
   }

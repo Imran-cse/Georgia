@@ -14,10 +14,10 @@ export default StyleSheet.create({
   imageContainer: {
     width: width - 40,
     height: width - 60,
-    // borderWidth: 1,
+    borderWidth: 1,
     borderColor: colors.borderColor,
     overflow: 'hidden',
-    elevation: 1,
+    // elevation: 1,
   },
   image: {
     width: width - 40,

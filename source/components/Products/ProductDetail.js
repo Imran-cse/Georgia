@@ -36,8 +36,10 @@ export default class ProductDetails extends Component {
       );
     }
 
+    const rating = Number(product.average_rating);
+
     return (
-      <View>
+      <View style={{backgroundColor: 'white'}}>
         <ScrollView>
           <View style={Styles.productContainer}>
             <ImageView
@@ -58,8 +60,9 @@ export default class ProductDetails extends Component {
             <View style={{ alignItems: 'flex-start', marginTop: 5 }}>
               <Rating
                 imageSize={15}
+                ratingCount={5}
                 readonly
-                startingValue={product.avrage_rating}
+                startingValue={rating}
               />
             </View>
 

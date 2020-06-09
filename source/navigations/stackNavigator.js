@@ -7,6 +7,8 @@ import Search from '../components/Search/Search';
 import Cart from '../components/Cart/Cart';
 import Account from '../components/Account/Account';
 import ProductDetails from '../components/Products/ProductDetail';
+import Login from '../components/Authentication/Login';
+import Signup from '../components/Authentication/Signup';
 
 const Stack = createStackNavigator();
 const options = { headerShown: false };
@@ -59,3 +61,12 @@ export const AccountStack = () => {
     </Stack.Navigator>
   );
 };
+
+export const AuthStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="Login" component={Login} options={options} />
+      <Stack.Screen name='Signup' component={Signup} options={options} />
+    </Stack.Navigator>
+  )
+}

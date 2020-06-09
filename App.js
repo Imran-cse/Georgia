@@ -7,18 +7,12 @@
  */
 
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native';
 
-import { HomeStack } from './source/navigations/stackNavigator';
-import { TabStack } from './source/navigations/tabNavigator';
+import { AppStack } from './source/navigations/switchNavigator';
 
 const App = () => {
-  return (
-    <NavigationContainer>
-      <TabStack />
-    </NavigationContainer>
-  )
-}
-
+  return <AppStack />;
+};
 
 export default App;

@@ -27,7 +27,7 @@ const CategorySection = props => {
             source={require('../../assets/home1/Air_pods_case_icon.png')}
             style={Styles.categoryImage}
           />
-          <Text style={Styles.categorySectionText}>Air Pods Case</Text>
+          <Text style={Styles.categorySectionText}>Air Pods Cases</Text>
         </TouchableOpacity>
       </View>
 
@@ -61,14 +61,14 @@ const CategorySection = props => {
             source={require('../../assets/home1/sd_card_flash_icon.png')}
             style={Styles.categoryImage}
           />
-          <Text style={Styles.categorySectionText}>Batteries</Text>
+          <Text style={Styles.categorySectionText}>SD Cards/Flash Drives</Text>
         </TouchableOpacity>
         <TouchableOpacity style={[Styles.categorySectionItem, {marginLeft: 15}]}>
           <Image
             source={require('../../assets/home1/c_store_icon.png')}
             style={Styles.categoryImage}
           />
-          <Text style={Styles.categorySectionText}>Chargers/Cables</Text>
+          <Text style={Styles.categorySectionText}>C Store</Text>
         </TouchableOpacity>
         <TouchableOpacity style={Styles.categorySectionItem}>
           <Image

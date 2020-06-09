@@ -40,14 +40,15 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
   resultContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    // flexDirection: 'row',
+    // flexWrap: 'wrap',
+    // justifyContent: 'space-between',
     paddingHorizontal: moderateScale(20),
   },
   itemContainer: {
     width: width / 2 - moderateScale(30),
-    marginBottom: moderateScale(20)
+    marginBottom: moderateScale(20),
+    marginRight: 20
   },
   imageWrapper: {
     borderWidth: 1,

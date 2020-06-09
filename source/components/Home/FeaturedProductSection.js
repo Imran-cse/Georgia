@@ -54,7 +54,7 @@ const FeaturedProdcutSection = props => {
                   <Rating
                     imageSize={10}
                     readonly
-                    startingValue={item.average_rating}
+                    startingValue={Number(item.average_rating)}
                   />
                 </View>
                 <View style={{ flex: 2, justifyContent: 'space-around' }}>
