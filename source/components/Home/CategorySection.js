@@ -4,17 +4,35 @@ import { View, Image, TouchableOpacity, Text } from 'react-native';
 import Styles from './Styles';
 
 const CategorySection = props => {
+  const {navigation} = props;
+
   return (
     <View style={{ marginHorizontal: 20, marginVertical: 10 }}>
       <View style={Styles.categorySectionContainer}>
-        <TouchableOpacity style={Styles.categorySectionItem}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('AllProductsView', {
+              endpoint: `products?category=15&per_page=${40}&`,
+              headText: 'Phone Cases',
+              from: 'Categories',
+            })
+          }
+          style={Styles.categorySectionItem}>
           <Image
             source={require('../../assets/home1/phone_case_icon.png')}
             style={Styles.categoryImage}
           />
           <Text style={Styles.categorySectionText}>Phone Case</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.categorySectionItem}>
+        <TouchableOpacity
+          // onPress={() =>
+          //   navigation.navigate('AllProductsView', {
+          //     endpoint: `products?category=${item.id}&per_page=${40}&`,
+          //     headText: item.name,
+          //     from: 'Categories',
+          //   })
+          // }
+          style={Styles.categorySectionItem}>
           <Image
             source={require('../../assets/home1/screen_protector_icon.png')}
             style={Styles.categoryImage}
@@ -22,7 +40,15 @@ const CategorySection = props => {
           <Text style={Styles.categorySectionText}>Screen Protector</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={Styles.categorySectionItem}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('AllProductsView', {
+              endpoint: `products?category=1740&per_page=${40}&`,
+              headText: 'AirPods Cases',
+              
+            })
+          }
+          style={Styles.categorySectionItem}>
           <Image
             source={require('../../assets/home1/Air_pods_case_icon.png')}
             style={Styles.categoryImage}
@@ -32,21 +58,45 @@ const CategorySection = props => {
       </View>
 
       <View style={Styles.categorySectionContainer}>
-        <TouchableOpacity style={Styles.categorySectionItem}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('AllProductsView', {
+              endpoint: `products?category=1737&per_page=${40}&`,
+              headText: 'Batteries',
+              
+            })
+          }
+          style={Styles.categorySectionItem}>
           <Image
             source={require('../../assets/home1/batteries_icon.png')}
             style={Styles.categoryImage}
           />
           <Text style={Styles.categorySectionText}>Batteries</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.categorySectionItem}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('AllProductsView', {
+              endpoint: `products?category=1738&per_page=${40}&`,
+              headText: 'Chargers/Cables',
+              
+            })
+          }
+          style={Styles.categorySectionItem}>
           <Image
             source={require('../../assets/home1/charger_cables_icon.png')}
             style={Styles.categoryImage}
           />
           <Text style={Styles.categorySectionText}>Chargers/Cables</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.categorySectionItem}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('AllProductsView', {
+              endpoint: `products?category=1739&per_page=${40}&`,
+              headText: 'Bluetooth Speakers',
+              
+            })
+          }
+          style={Styles.categorySectionItem}>
           <Image
             source={require('../../assets/home1/bluetooth_icon.png')}
             style={Styles.categoryImage}
@@ -55,31 +105,55 @@ const CategorySection = props => {
         </TouchableOpacity>
       </View>
 
-      <View style={[Styles.categorySectionContainer, {justifyContent: 'flex-start'}]}>
-        <TouchableOpacity style={Styles.categorySectionItem}>
+      <View
+        style={[
+          Styles.categorySectionContainer,
+          { justifyContent: 'flex-start' },
+        ]}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('AllProductsView', {
+              endpoint: `products?category=2107&per_page=${40}&`,
+              headText: 'SD Cards/Flash Drivers',
+              
+            })
+          }
+          style={Styles.categorySectionItem}>
           <Image
             source={require('../../assets/home1/sd_card_flash_icon.png')}
             style={Styles.categoryImage}
           />
           <Text style={Styles.categorySectionText}>SD Cards/Flash Drives</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[Styles.categorySectionItem, {marginLeft: 15}]}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('AllProductsView', {
+              endpoint: `products?category=2145&per_page=${40}&`,
+              headText: 'C Store',
+            })
+          }
+          style={[Styles.categorySectionItem, { marginLeft: 15 }]}>
           <Image
             source={require('../../assets/home1/c_store_icon.png')}
             style={Styles.categoryImage}
           />
           <Text style={Styles.categorySectionText}>C Store</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={Styles.categorySectionItem}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('AllProductsView', {
+              endpoint: `products?category=2137&per_page=${40}&`,
+              headText: 'Watch Accessories',
+            })
+          }
+          style={Styles.categorySectionItem}>
           <Image
             source={require('../../assets/home1/bluetooth_icon.png')}
             style={Styles.categoryImage}
           />
-          <Text style={Styles.categorySectionText}>Bluetooth Speakers</Text>
+          <Text style={Styles.categorySectionText}>Watch Accessories</Text>
         </TouchableOpacity>
       </View>
-
-
     </View>
   );
 };

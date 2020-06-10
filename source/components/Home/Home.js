@@ -90,7 +90,7 @@ export default class Home extends Component {
 
     return (
       <View style={Styles.container}>
-        <Header />
+        <Header navigation={this.props.navigation} />
 
         <ScrollView>
           <TouchableOpacity
@@ -104,7 +104,7 @@ export default class Home extends Component {
 
           <SliderBox images={this.state.images} />
 
-          <CategorySection />
+          <CategorySection navigation={this.props.navigation} />
           <View style={Styles.divider} />
 
           {featuredProducts.length > 0 && (

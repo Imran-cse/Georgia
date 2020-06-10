@@ -43,7 +43,8 @@ export default StyleSheet.create({
     paddingHorizontal: moderateScale(20),
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: moderateScale(10)
+    paddingTop: moderateScale(20),
+    opacity: 0.7
   },
   itemText: {
     fontSize: moderateScale(18)

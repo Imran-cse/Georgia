@@ -6,6 +6,7 @@ import { getCategory } from '../../server/fetch';
 
 import Styles from './Style';
 import ProductHeader from './ProductHeader';
+import SpinView from '../Common/SpinView';
 
 export default class AllProductsView extends Component {
   constructor(props) {
@@ -34,7 +35,16 @@ export default class AllProductsView extends Component {
     const { navigation, route } = this.props;
 
     // const { headText } = route.params.headText;
-    console.log('In all product, navigation:', navigation, 'route', route)
+    console.log('In all product, navigation:', navigation, 'route', route);
+
+    if (!data || data.length < 1) {
+      return (
+        <View style={Styles.allProductContainer}>
+          <ProductHeader navigation={navigation} />
+          <SpinView />
+        </View>
+      );
+    }
 
     return (
       <View style={Styles.allProductContainer}>

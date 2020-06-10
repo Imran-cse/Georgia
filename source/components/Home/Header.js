@@ -6,6 +6,8 @@ import { SearchBar } from 'react-native-elements';
 import Styles from './Styles';
 
 const Header = props => {
+  const {navigation} = props;
+
   return (
     <View>
       <View style={Styles.containerHeader}>
@@ -22,7 +24,7 @@ const Header = props => {
               style={[Styles.headerIcon, {width: 20, height: 20}]}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('Wishlist')}>
             <Image
               source={require('../../assets/home1/wishlist_icon.png')}
               style={[Styles.headerIcon, {width: 20, height: 20}]}

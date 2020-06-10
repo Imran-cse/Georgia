@@ -4,6 +4,7 @@ import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import { categories, colors } from '../../constants/constant_strings';
 import Header from './Header';
 import { getCategory } from '../../server/fetch';
+import SpinView from '../Common/SpinView';
 
 import Styles from './Styles';
 import { moderateScale } from '../../constants/constant_functions';
@@ -33,6 +34,15 @@ export default class Categories extends Component {
   render() {
     const { data } = this.state;
     const { navigation } = this.props;
+
+    if (!data || data.length < 1) {
+      return (
+        <View style={{backgroundColor:'white', flex: 1}}>
+          <Header />
+          <SpinView />
+        </View>
+      );
+    }
 
     return (
       <View style={{ backgroundColor: 'white', flex: 1 }}>
