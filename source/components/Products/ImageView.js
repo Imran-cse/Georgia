@@ -6,28 +6,30 @@ import { Icon } from 'react-native-elements';
 
 const ImageView = props => {
   const { images, selectedImage } = props;
-  console.log('selected image:', selectedImage);
+  console.log('selected image:', images);
 
   return (
     <View>
       <View style={Styles.imageContainer}>
-        <Image
-          source={{ uri: images[selectedImage].src }}
-          style={Styles.image}
-        />
-
+        {!!images && (
+          <Image
+            source={{ uri: images[selectedImage].src }}
+            style={Styles.image}
+          />
+        )}
       </View>
       <View
         style={{
           flexDirection: 'row',
           flexWrap: 'wrap',
           justifyContent:
-            images.length === 2 || images.length === 5
+            !!images && (images.length === 2 || images.length === 5)
               ? 'flex-start'
               : 'space-between',
           // alignContent: 'flex-start',
         }}>
-        {images.length > 0 &&
+        {!!images &&
+          images.length > 0 &&
           images.map((item, index) => {
             console.log(item);
             return (

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 
 // import { SearchBar } from 'react-native-elements';
 import { SliderBox } from 'react-native-image-slider-box';
@@ -13,6 +13,7 @@ import SearchBar from '../Search/SerchBar';
 
 import { base_url, config, base_url2, getCategory } from '../../server/fetch';
 import Styles from './Styles';
+import { Icon } from 'react-native-elements';
 
 export default class Home extends Component {
   constructor(props) {
@@ -20,7 +21,8 @@ export default class Home extends Component {
     this.state = {
       images: [],
       featuredProducts: [],
-      seacrText: undefined,
+      searchText: undefined,
+      showLoading: false,
     };
   }
 
@@ -34,13 +36,13 @@ export default class Home extends Component {
       'products/categories?search=featured-products&',
     );
     const response = await Promise.resolve(result.json());
-    console.log('respones', JSON.stringify(response))
+    console.log('respones', JSON.stringify(response));
     const head1 = result.headers.get('X-WP-Total');
     console.log('head1: ', head1);
     const catId = response[0].id;
     const result2 = await getCategory(`products?category=${catId}&`);
-    const data = await Promise.resolve(result2.json())
-    this.setState({ featuredProducts: data });
+    const data = await Promise.resolve(result2.json());
+    this.setState({ featuredProducts: data, featureCatId: catId });
     // console.log(JSON.stringify(data));
   }
 
@@ -62,17 +64,43 @@ export default class Home extends Component {
       .catch(err => console.log(err));
   }
 
+  updateState(obj) {
+    this.setState(obj);
+  }
+
+  async handleSearch() {
+    const { searchText } = this.state;
+    const res = await getCategory(`products?search=${searchText}&`);
+    const data = await Promise.resolve(res.json());
+    const count = res.headers.get('X-WP-Total');
+    if (data !== null) {
+      // console.log('data', data[0])
+      this.setState({ showLoading: false });
+      this.props.navigation.navigate('Search', {
+        data: data,
+        count: count,
+        searchText: searchText,
+        fromHome: true,
+      });
+    }
+  }
+
   render() {
-    const { featuredProducts, seacrText } = this.state;
+    const { featuredProducts, searchText, featureCatId } = this.state;
 
     return (
       <View style={Styles.container}>
         <Header />
 
         <ScrollView>
-          <View style={{ marginHorizontal: 20, marginVertical: 10 }}>
-            <SearchBar navigation={this.props.navigation} />
-          </View>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Search')}
+            style={{ marginHorizontal: 20, marginVertical: 10 }}>
+            <View style={Styles.searchView}>
+              <Icon name="search" type="fontisto" />
+              <Text style={Styles.searchText}>Search...</Text>
+            </View>
+          </TouchableOpacity>
 
           <SliderBox images={this.state.images} />
 
@@ -83,6 +111,7 @@ export default class Home extends Component {
             <FeaturedProductSection
               products={featuredProducts}
               navigation={this.props.navigation}
+              featureCatId={featureCatId}
             />
           )}
 

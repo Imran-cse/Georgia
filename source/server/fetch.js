@@ -55,12 +55,12 @@ export async function getCategory(endpoint) {
   //     };
   //   })
   //   .catch(err => console.log(err));
-
+  console.log('PATH ', base_url + endpoint + authParam);
   try {
     const respones = await fetch(base_url2 + endpoint + authParam, config);
     return respones;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 

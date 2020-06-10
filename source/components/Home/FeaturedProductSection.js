@@ -13,7 +13,7 @@ import { Icon, Rating } from 'react-native-elements';
 import Styles from './Styles';
 
 const FeaturedProdcutSection = props => {
-  const { products } = props;
+  const { products, navigation, featureCatId } = props;
   const [scrollEnd, setScroll] = useState(false);
 
   return (
@@ -21,7 +21,15 @@ const FeaturedProdcutSection = props => {
       <View style={Styles.sectionHeaderContainer}>
         <Text style={Styles.sectionHeaderText}>Featured Products</Text>
         {scrollEnd && (
-          <Text style={Styles.seeProductText}>See all Products</Text>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('AllProductsView', {
+                endpoint: `products?category=${featureCatId}/&per_page=${40}&`,
+                headText: 'Featured Products'
+              })
+            }>
+            <Text style={Styles.seeProductText}>See all Products</Text>
+          </TouchableOpacity>
         )}
       </View>
       <View
@@ -35,7 +43,10 @@ const FeaturedProdcutSection = props => {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() =>
-                props.navigation.navigate('ProductDetails', { product: item })
+                props.navigation.navigate('ProductDetails', {
+                  product: item,
+                  from: 'Home',
+                })
               }
               style={Styles.featuredProductItem}>
               <View>

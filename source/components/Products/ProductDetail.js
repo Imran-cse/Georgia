@@ -3,9 +3,10 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from 'react-native';
 
 import { Button, Rating, Icon } from 'react-native-elements';
 import { Picker } from 'native-base';
+import HTML from 'react-native-render-html';
 
 import ImageView from './ImageView';
-import HTML from 'react-native-render-html';
+import ProductHeader from './ProductHeader';
 
 import Styles from './Style';
 
@@ -25,7 +26,7 @@ export default class ProductDetails extends Component {
   render() {
     const { route, navigation } = this.props;
     console.log(route);
-    const { product } = route.params;
+    const { product, from } = route.params;
 
     const { selectedImage, selectedValue } = this.state;
 
@@ -40,22 +41,10 @@ export default class ProductDetails extends Component {
 
     return (
       <View style={{ backgroundColor: 'white', flex: 1 }}>
-        <View style={Styles.headerContainer}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="arrowleft" type="antdesign" color='red' />
-          </TouchableOpacity>
-          <View style={Styles.headerView}>
-            <TouchableOpacity style={{ paddingRight: 15 }}>
-              <Icon name="hearto" type="antdesign" size={20} color='red' />
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <Icon name="menu" type="feather" color='red' />
-            </TouchableOpacity>
-          </View>
-        </View>
+        <ProductHeader navigation={navigation} from={route.params.from} />  
 
         <ScrollView>
-          <View style={[Styles.productContainer, {marginTop: 0}]}>
+          <View style={[Styles.productContainer, { marginTop: 0 }]}>
             <ImageView
               images={product.images}
               selectedImage={selectedImage}
@@ -88,8 +77,8 @@ export default class ProductDetails extends Component {
             <View style={Styles.buttonContainer}>
               <Button title="BUY NOW" buttonStyle={Styles.buyBotton} />
               <Button
-                title="ADD CART"
-                buttonStyle={Styles.cartButton}
+                title="ADD TO CART"
+                buttonStyle={[Styles.cartButton, {paddingHorizontal: 10}]}
                 titleStyle={{ color: 'black' }}
                 // onPress={() => this.setState({ count: 1 })}
               />

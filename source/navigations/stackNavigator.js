@@ -6,7 +6,6 @@ import Categories from '../components/Categories/Categories';
 import Search from '../components/Search/Search';
 import Cart from '../components/Cart/Cart';
 import Account from '../components/Account/Account';
-import ProductDetails from '../components/Products/ProductDetail';
 import Login from '../components/Authentication/Login';
 import Signup from '../components/Authentication/Signup';
 
@@ -17,18 +16,23 @@ export const HomeStack = () => {
   return (
     <Stack.Navigator initialRouteName='Home'>
       <Stack.Screen name="Home" component={Home} options={options} />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="ProductDetails"
         component={ProductDetails}
         options={options}
       />
+      <Stack.Screen
+        name='AllProductsView'
+        component={AllProductsView}
+        options={options}
+      /> */}
     </Stack.Navigator>
   );
 };
 
 export const CategoryStack = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName='Categories'>
       <Stack.Screen
         name="Categories"
         component={Categories}

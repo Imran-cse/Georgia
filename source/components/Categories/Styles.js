@@ -36,22 +36,31 @@ export default StyleSheet.create({
   },
   itemContainer: {
     flexDirection: 'column',
-    borderWidth: 1,
-    borderColor: colors.borderColor
+    // borderWidth: 1,
+    borderColor: colors.borderColor,
+    width: width/2 - 30,
+    marginBottom: moderateScale(20),
+    marginRight: moderateScale(20)
   },
   imageContainer: {
     width: width / 2 - 30,
     height: width / 2 + 10,
     overflow: 'hidden',
-    // elevation: 4
+    borderWidth: 1,
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: colors.borderColor
   },
   imageStyle: {
-    width: width / 2 - 20,
-    height: width / 2 + 10,
+    width: width / 3,
+    height: width / 3,
     overflow: 'hidden',
+    resizeMode: 'contain'
   },
   categoryText: {
-    fontSize: moderateScale(17),
+    fontSize: moderateScale(16),
     textAlign: 'center',
+    opacity: 0.7,
   },
 });

@@ -113,4 +113,19 @@ export default StyleSheet.create({
     // marginHorizontal: moderateScale(20),
     // paddingTop: moderateScale(15)
   },
+  allProductContainer: {
+    backgroundColor: 'white',
+    flex: 1
+  },
+  resultContainer: {
+    paddingHorizontal: moderateScale(20),
+  },
+  allProductLabel: {
+    paddingLeft: moderateScale(20),
+    paddingBottom: moderateScale(10),
+    fontSize: moderateScale(16),
+    fontWeight: 'bold',
+    color: 'red',
+    opacity: 0.5
+  }
 });

@@ -157,5 +157,16 @@ export default StyleSheet.create({
     width: 150,
     resizeMode: 'contain',
   },
- 
+  searchView: {
+    flexDirection: 'row',
+    borderWidth: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 8,
+    borderRadius: 10,
+    opacity: 0.5
+  },
+  searchText: {
+    fontSize: moderateScale(17),
+    paddingLeft: moderateScale(20)
+  }
 });
