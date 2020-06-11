@@ -14,7 +14,15 @@ const PopularPhoneSection = props => {
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={{ flexDirection: 'row', marginLeft: 20 }}>
-          <TouchableOpacity style={Styles.popularImageContainer}>
+          <TouchableOpacity
+            onPress={() =>
+              props.navigation.navigate('AllProductsView', {
+                endpoint: `products?per_page=${100}&`,
+                headText: 'iPhone XR',
+                filter: 'popularPhone'
+              })
+            }
+            style={Styles.popularImageContainer}>
             <Image
               source={require('../../assets/home1/popular_phone_model_1.png')}
               style={Styles.poularImage}

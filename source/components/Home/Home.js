@@ -3,6 +3,7 @@ import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 
 // import { SearchBar } from 'react-native-elements';
 import { SliderBox } from 'react-native-image-slider-box';
+import { Icon } from 'react-native-elements';
 
 import Header from './Header';
 import CategorySection from './CategorySection';
@@ -10,10 +11,16 @@ import FeaturedProductSection from './FeaturedProductSection';
 import PopularPhoneSection from './PopularPhoneSection';
 import NewPhoneSection from './NewPhoneSection';
 import SearchBar from '../Search/SerchBar';
+import QuantityModal from '../Common/QuantityModal';
 
+import {
+  upldateWishlist,
+  updateCart,
+  fetchWishlist,
+  fetchCartData,
+} from '../../constants/constant_functions';
 import { base_url, config, base_url2, getCategory } from '../../server/fetch';
 import Styles from './Styles';
-import { Icon } from 'react-native-elements';
 
 export default class Home extends Component {
   constructor(props) {
@@ -23,12 +30,23 @@ export default class Home extends Component {
       featuredProducts: [],
       searchText: undefined,
       showLoading: false,
+      wishList: {},
+      cart: {},
+      isModalVisible: false,
     };
   }
 
   componentDidMount() {
     this.fetchBanner();
     this.featuredProducts();
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      fetchWishlist(this);
+      fetchCartData(this);
+    });
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
   async featuredProducts() {
@@ -85,11 +103,42 @@ export default class Home extends Component {
     }
   }
 
+  handleWishlist(item) {
+    const { wishList } = this.state;
+    const { id, name, average_rating, price, images } = item;
+    wishList[id.toString()] = { name, average_rating, price, images };
+
+    upldateWishlist(wishList, this);
+  }
+
+  async handleCart(quantity) {
+    const { cart, isModalVisible, item } = this.state;
+    const { id, name, average_rating, price, images } = item;
+    cart[id.toString()] = { name, average_rating, quantity, price, images };
+
+    await updateCart(cart, this);
+    this.setState({item: undefined, isModalVisible: false}, () => {
+      alert('Product added to cart')
+    })
+  }
+
   render() {
-    const { featuredProducts, searchText, featureCatId } = this.state;
+    const {
+      featuredProducts,
+      isModalVisible,
+      searchText,
+      featureCatId,
+      wishList,
+    } = this.state;
 
     return (
       <View style={Styles.container}>
+        <QuantityModal
+          isModalVisible={this.state.isModalVisible}
+          updateState={this.updateState.bind(this)}
+          handleCart={this.handleCart.bind(this)}
+        />
+
         <Header navigation={this.props.navigation} />
 
         <ScrollView>
@@ -112,6 +161,9 @@ export default class Home extends Component {
               products={featuredProducts}
               navigation={this.props.navigation}
               featureCatId={featureCatId}
+              wishList={wishList}
+              handleWishlist={this.handleWishlist.bind(this)}
+              updateState={this.updateState.bind(this)}
             />
           )}
 
@@ -122,9 +174,9 @@ export default class Home extends Component {
             />
           </View>
 
-          <PopularPhoneSection />
+          <PopularPhoneSection navigation={this.props.navigation} />
 
-          <NewPhoneSection />
+          <NewPhoneSection navigation={this.props.navigation} />
         </ScrollView>
       </View>
     );

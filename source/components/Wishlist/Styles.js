@@ -43,8 +43,8 @@ export default StyleSheet.create({
     paddingVertical: verticalScale(20)
   },
   image: {
-    width: width / 3,
-    height: width / 3,
+    width: width / 4 + 10,
+    height: width / 3 -20,
     resizeMode: 'contain',
   },
   desContainer: {

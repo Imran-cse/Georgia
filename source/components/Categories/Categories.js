@@ -37,8 +37,8 @@ export default class Categories extends Component {
 
     if (!data || data.length < 1) {
       return (
-        <View style={{backgroundColor:'white', flex: 1}}>
-          <Header />
+        <View style={{ backgroundColor: 'white', flex: 1 }}>
+          <Header navigation={navigation} />
           <SpinView />
         </View>
       );
@@ -46,7 +46,7 @@ export default class Categories extends Component {
 
     return (
       <View style={{ backgroundColor: 'white', flex: 1 }}>
-        <Header />
+        <Header navigation={navigation} />
 
         <View style={{ flex: 1, paddingTop: 10 }}>
           <FlatList
@@ -59,7 +59,7 @@ export default class Categories extends Component {
                   navigation.navigate('AllProductsView', {
                     endpoint: `products?category=${item.id}&per_page=${40}&`,
                     headText: item.name,
-                    from: 'Categories',
+                    categoryId: item.id
                   })
                 }
                 style={Styles.itemContainer}>

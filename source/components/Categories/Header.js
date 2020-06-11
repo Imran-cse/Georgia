@@ -4,6 +4,8 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import Styles from './Styles';
 
 const Header = props => {
+  const { navigation } = props;
+
   return (
     <View style={Styles.headerContainer}>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -16,7 +18,7 @@ const Header = props => {
         <Text style={Styles.headerText}>Categories</Text>
       </View>
 
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Wishlist')}>
         <Image
           source={require('../../assets/home1/wishlist_icon.png')}
           style={[Styles.headerIcon]}

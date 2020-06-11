@@ -1,94 +1,193 @@
 import React, { Component } from 'react';
-import { View, Image, Text, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  ScrollView,
+} from 'react-native';
 
 import { Icon, Rating, Input, Button } from 'react-native-elements';
 import { Picker } from 'native-base';
 
+import { fetchCartData, updateCart } from '../../constants/constant_functions';
 import Styles from './Styles';
 
 export default class Cart extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      cart: {},
+    };
+
+    fetchCartData(this);
+  }
+
+  async fetchCartData() {
+    await fetchCartData(this);
+  }
+
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      fetchCartData(this);
+    });
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
+  async removeFromCart(id) {
+    let { cart } = this.state;
+    delete cart[id];
+    await upldatecart(cart, this);
+  }
+
+  async changeQuantity(id, quantity) {
+    const { cart } = this.state;
+    cart[id].quantity = quantity;
+
+    await updateCart(cart, this);
+    await fetchCartData(this);
+  }
+
+  async removeFromCart(id) {
+    let { cart } = this.state;
+
+    delete cart[id];
+    await updateCart(cart, this);
+    await fetchCartData(this);
+  }
+
+  async clearCart() {
+    const { cart } = this.state;
+    for (const key in cart) {
+      if (cart.hasOwnProperty(key)) {
+        delete cart[key];
+      }
+    }
+
+    await updateCart(cart, this);
+    await fetchCartData(this);
   }
 
   render() {
+    const { cart } = this.state;
+    console.log('cart', cart);
+
+    let productCount = 0;
+    let totalPrice = 0;
+    let arrCart = [];
+    for (const key in cart) {
+      if (cart.hasOwnProperty(key)) {
+        arrCart.push({ ...cart[key], id: key });
+        totalPrice += Number(cart[key].quantity) * Number(cart[key].price);
+        productCount += Number(cart[key].quantity);
+      }
+    }
+
+    let pickerList = [];
+    for (let index = 1; index < 50; index++) {
+      pickerList.push(
+        <Picker.Item label={`${index}`} key={index} value={index} />,
+      );
+    }
+
     return (
       <View style={Styles.container}>
         <View style={Styles.headerContainer}>
           <Text style={Styles.myCartText}>My Cart</Text>
           <View style={Styles.headBarView}>
-            <Text style={Styles.totalText}>TOTAL 1 items</Text>
-            <TouchableOpacity>
+            <Text style={Styles.totalText}>TOTAL {arrCart.length} items</Text>
+            <TouchableOpacity onPress={() => this.clearCart()}>
               <Text style={Styles.clearText}>CLEAR CART</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={Styles.itemContainer}>
-          <View style={Styles.iconContainer}>
-            <Icon
-              name="minus-circle-outline"
-              type="material-community"
-              size={30}
-              color="grey"
-            />
-          </View>
-          <View style={Styles.imageContainer}>
-            <Image
-              source={require('../../assets/home1/newest_phone_model_5.png')}
-              style={Styles.image}
-            />
-            <View style={Styles.pickerView}>
-              <Picker style={{ flex: 1, width: 90, height: 30 }}>
-                <Picker.Item label="10" value="1" />
-              </Picker>
+        <ScrollView>
+          <FlatList
+            data={arrCart}
+            renderItem={({ item }) => {
+              const rating = !!item.average_raitng
+                ? Number(item.average_raitng)
+                : 0;
+              productCount += Number(item.price) * Number(item.quantity);
+              return (
+                <View style={Styles.itemContainer}>
+                  <View style={Styles.iconContainer}>
+                    <Icon
+                      name="minus-circle-outline"
+                      type="material-community"
+                      size={30}
+                      color="grey"
+                      onPress={() => this.removeFromCart(item.id)}
+                    />
+                  </View>
+                  <View style={Styles.imageContainer}>
+                    <Image
+                      source={{ uri: item.images[0].src }}
+                      style={Styles.image}
+                    />
+                    <View style={Styles.pickerView}>
+                      <Picker
+                        selectedValue={item.quantity}
+                        onValueChange={quantity => {
+                          this.changeQuantity(item.id, quantity);
+                        }}
+                        style={{ flex: 1, width: 90, height: 30 }}>
+                        {pickerList}
+                      </Picker>
+                    </View>
+                  </View>
+                  <View style={Styles.desContainer}>
+                    <Text style={Styles.desText}>{item.name}</Text>
+                    <Text style={Styles.priceText}>$ {item.price}</Text>
+                    <Rating readonly startingValue={rating} imageSize={10} />
+                  </View>
+                </View>
+              );
+            }}
+          />
+
+          <View style={Styles.horizontalLine} />
+
+          <View style={Styles.couponView}>
+            <View style={{ flex: 7 }}>
+              <Input placeholder="Coupon Code" inputStyle={{ fontSize: 16 }} />
+            </View>
+            <View style={{ flex: 3 }}>
+              <TouchableOpacity>
+                <Image
+                  source={require('../../assets/home1/apply_button.png')}
+                  style={Styles.couponImage}
+                />
+              </TouchableOpacity>
             </View>
           </View>
-          <View style={Styles.desContainer}>
-            <Text style={Styles.desText}>
-              10 Pack Apple iPhone 11 (6.1 inch) Clear Front Tempered
-            </Text>
-            <Text style={Styles.priceText}>$ 7.99</Text>
-            <Rating readonly startingValue={3} imageSize={10} />
-          </View>
-        </View>
 
-        <View style={Styles.horizontalLine} />
+          <View style={Styles.totalView}>
+            <View style={Styles.rowView}>
+              <Text style={Styles.smallText}>Products</Text>
+              <Text style={Styles.smallText}>x{productCount}</Text>
+            </View>
+            <View style={Styles.rowView}>
+              <Text style={Styles.bigText}>Sub Total</Text>
+              <Text style={Styles.bigText}>$ {totalPrice}</Text>
+            </View>
+            <View style={Styles.rowView}>
+              <Text style={Styles.smallText}>Tax</Text>
+              <Text style={Styles.smallText}>$ 0.32</Text>
+            </View>
+            <View style={Styles.rowView}>
+              <Text style={Styles.bigText}>Total</Text>
+              <Text style={Styles.bigText}>$ {totalPrice}</Text>
+            </View>
+          </View>
 
-        <View style={Styles.couponView}>
-          <View style={{ flex: 7 }}>
-            <Input placeholder="Coupon Code" inputStyle={{fontSize: 16}} />
-          </View>
-          <View style={{ flex: 3 }}>
-            <TouchableOpacity>
-              <Image
-                source={require('../../assets/home1/apply_button.png')}
-                style={Styles.couponImage}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-
-        <View style={Styles.totalView}>
-          <View style={Styles.rowView}>
-            <Text style={Styles.smallText}>Products</Text>
-            <Text style={Styles.smallText}>x1</Text>
-          </View>
-          <View style={Styles.rowView}>
-            <Text style={Styles.bigText}>Sub Total</Text>
-            <Text style={Styles.bigText}>$ 7.99</Text>
-          </View>
-          <View style={Styles.rowView}>
-            <Text style={Styles.smallText}>Tax</Text>
-            <Text style={Styles.smallText}>$ 0.32</Text>
-          </View>
-          <View style={Styles.rowView}>
-            <Text style={Styles.bigText}>Sub Total</Text>
-            <Text style={Styles.bigText}>$ 8.31</Text>
-          </View>
-        </View>
-
-        <Button title='CHECKOUT' buttonStyle={Styles.buttonStyle} />
+          <Button title="CHECKOUT" buttonStyle={Styles.buttonStyle} />
+        </ScrollView>
       </View>
     );
   }

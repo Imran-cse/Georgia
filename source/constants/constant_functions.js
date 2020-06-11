@@ -26,8 +26,31 @@ export const fetchCartData = async context => {
   });
 };
 
+export const fetchCartDataCount = async () => {
+  const res = await AsyncStorage.getItem('cart');
+  const count = res ? JSON.parse(res) : {}
+  return Object.keys(count).length;
+}
+
 export const updateCart = async (cart, context) => {
   await AsyncStorage.setItem('cart', JSON.stringify(cart), (err, res) => {
     context.setState({ cart });
   });
 };
+
+export const upldateWishlist = async (wishList, context) => {
+  await AsyncStorage.setItem(
+    'wishList',
+    JSON.stringify(wishList),
+    (err, res) => {
+      context.setState({ wishList });
+    },
+  );
+};
+
+export const fetchWishlist = async context => {
+  await AsyncStorage.getItem('wishList', (err, res) => {
+    const wishList = res ? JSON.parse(res) : {};
+    context.setState({ wishList });
+  })
+}

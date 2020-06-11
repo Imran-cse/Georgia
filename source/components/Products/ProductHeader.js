@@ -21,7 +21,7 @@ const ProductHeader = props => {
         <Icon name="arrowleft" type="antdesign" color="red" />
       </TouchableOpacity>
       <View style={Styles.headerView}>
-        <TouchableOpacity style={{ paddingRight: 15 }}>
+        <TouchableOpacity onPress={() => navigation.navigate('Wishlist')} style={{ paddingRight: 15 }}>
           <Icon name="hearto" type="antdesign" size={20} color="red" />
         </TouchableOpacity>
         <TouchableOpacity>

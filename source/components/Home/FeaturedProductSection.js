@@ -13,7 +13,7 @@ import { Icon, Rating } from 'react-native-elements';
 import Styles from './Styles';
 
 const FeaturedProdcutSection = props => {
-  const { products, navigation, featureCatId } = props;
+  const { products, navigation, featureCatId, wishList } = props;
   const [scrollEnd, setScroll] = useState(false);
 
   return (
@@ -25,7 +25,7 @@ const FeaturedProdcutSection = props => {
             onPress={() =>
               navigation.navigate('AllProductsView', {
                 endpoint: `products?category=${featureCatId}/&per_page=${40}&`,
-                headText: 'Featured Products'
+                headText: 'Featured Products',
               })
             }>
             <Text style={Styles.seeProductText}>See all Products</Text>
@@ -69,10 +69,21 @@ const FeaturedProdcutSection = props => {
                   />
                 </View>
                 <View style={{ flex: 2, justifyContent: 'space-around' }}>
-                  <TouchableOpacity>
-                    <Icon name="hearto" type="antdesign" />
-                  </TouchableOpacity>
-                  <TouchableOpacity>
+                  {(wishList && wishList.hasOwnProperty(item.id) && (
+                    <TouchableOpacity
+                      onPress={() => alert('already added to wishlist!')}>
+                      <Icon name="heart" type="antdesign" color="red" />
+                    </TouchableOpacity>
+                  )) || (
+                    <TouchableOpacity
+                      onPress={() => props.handleWishlist(item)}>
+                      <Icon name="hearto" type="antdesign" />
+                    </TouchableOpacity>
+                  )}
+                  <TouchableOpacity
+                    onPress={() => {
+                      props.updateState({ isModalVisible: true, item: item });
+                    }}>
                     <Icon name="shoppingcart" type="antdesign" />
                   </TouchableOpacity>
                 </View>

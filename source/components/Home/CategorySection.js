@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, TouchableOpacity, Text } from 'react-native';
+import { View, Image, TouchableOpacity, Text, Dimensions } from 'react-native';
 
 import Styles from './Styles';
 
@@ -146,10 +146,10 @@ const CategorySection = props => {
               headText: 'Watch Accessories',
             })
           }
-          style={Styles.categorySectionItem}>
+          style={[Styles.categorySectionItem, {width: Dimensions.get('window').width/3}]}>
           <Image
-            source={require('../../assets/home1/bluetooth_icon.png')}
-            style={Styles.categoryImage}
+            source={require('../../assets/home1/watch_accesories_img.png')}
+            style={[Styles.categoryImage, {height: 60}]}
           />
           <Text style={Styles.categorySectionText}>Watch Accessories</Text>
         </TouchableOpacity>

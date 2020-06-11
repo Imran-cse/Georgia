@@ -15,6 +15,7 @@ import SearchBar from '../Search/SerchBar';
 import ProductItemView from '../Products/ProductItemView';
 
 import Styles from './Styles';
+import SpinView from '../Common/SpinView';
 
 export default class Search extends Component {
   constructor(props) {
@@ -29,6 +30,7 @@ export default class Search extends Component {
       data: data || [],
       count: count,
       page: 1,
+      isLoading: false,
     };
   }
 
@@ -44,7 +46,7 @@ export default class Search extends Component {
 
   async handleSearch() {
     console.log('came in handleSerch');
-
+    // this.setState({ isLoading: true });
     const { searchText } = this.state;
     const res = await getCategory(
       `products?search=${searchText}&per_page=${40}&`,
@@ -55,7 +57,7 @@ export default class Search extends Component {
       // console.log('data', data[0])
       this.setState({ showLoading: false });
 
-      this.setState({ data, count });
+      this.setState({ data, count, isLoading: false });
     }
   }
 
@@ -64,6 +66,7 @@ export default class Search extends Component {
     if (count - page * 40 < 0) {
       return;
     }
+    this.setState({ isLoading: true });
     const res = await getCategory(
       `products?search=${searchText}&page=${page + 1}&per_page=${40}&`,
     );
@@ -73,7 +76,7 @@ export default class Search extends Component {
       this.setState({ showLoading: false });
       let temp = [];
       temp.push(...data, ...newData);
-      this.setState({ data: temp, page: page + 1 }, () =>
+      this.setState({ data: temp, page: page + 1, isLoading: false }, () =>
         console.log(this.state.data.length),
       );
     }
@@ -112,9 +115,16 @@ export default class Search extends Component {
             onEndReachedThreshold={0.8}
             onEndReached={() => this.loadMore()}
             renderItem={({ item }) => {
-              return <ProductItemView item={item} navigation={navigation} from='Search' />;
+              return (
+                <ProductItemView
+                  item={item}
+                  navigation={navigation}
+                  from="Search"
+                />
+              );
             }}
           />
+          {this.state.isLoading && <SpinView />}
         </View>
       </View>
     );
