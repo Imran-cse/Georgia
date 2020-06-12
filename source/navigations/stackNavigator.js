@@ -8,6 +8,10 @@ import Cart from '../components/Cart/Cart';
 import Account from '../components/Account/Account';
 import Login from '../components/Authentication/Login';
 import Signup from '../components/Authentication/Signup';
+import Address from '../components/Checkout/Address';
+import Shipping from '../components/Checkout/Shipping';
+import Preview from '../components/Checkout/Preview';
+import Payment from '../components/Checkout/Payment';
 
 const Stack = createStackNavigator();
 const options = { headerShown: false };
@@ -71,6 +75,17 @@ export const AuthStack = () => {
     <Stack.Navigator>
       <Stack.Screen name="Login" component={Login} options={options} />
       <Stack.Screen name='Signup' component={Signup} options={options} />
+    </Stack.Navigator>
+  )
+}
+
+export const CheckoutStack = () => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name='Address' component={Address} options={options} />
+      <Stack.Screen name='Shipping' component={Shipping} options={options} />
+      <Stack.Screen name='Preview' component={Preview} options={options} />
+      <Stack.Screen name='Payment' component={Payment} options={options} />
     </Stack.Navigator>
   )
 }

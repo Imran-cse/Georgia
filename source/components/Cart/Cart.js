@@ -107,50 +107,47 @@ export default class Cart extends Component {
         </View>
 
         <ScrollView>
-          <FlatList
-            data={arrCart}
-            renderItem={({ item }) => {
-              const rating = !!item.average_raitng
-                ? Number(item.average_raitng)
-                : 0;
-              productCount += Number(item.price) * Number(item.quantity);
-              return (
-                <View style={Styles.itemContainer}>
-                  <View style={Styles.iconContainer}>
-                    <Icon
-                      name="minus-circle-outline"
-                      type="material-community"
-                      size={30}
-                      color="grey"
-                      onPress={() => this.removeFromCart(item.id)}
-                    />
-                  </View>
-                  <View style={Styles.imageContainer}>
+          {arrCart.map(item => {
+            const rating = !!item.average_raitng
+              ? Number(item.average_raitng)
+              : 0;
+            return (
+              <View style={Styles.itemContainer}>
+                <View style={Styles.iconContainer}>
+                  <Icon
+                    name="minus-circle-outline"
+                    type="material-community"
+                    size={30}
+                    color="grey"
+                    onPress={() => this.removeFromCart(item.id)}
+                  />
+                </View>
+                <View style={Styles.imageContainer}>
+                  {item.images && (
                     <Image
                       source={{ uri: item.images[0].src }}
                       style={Styles.image}
                     />
-                    <View style={Styles.pickerView}>
-                      <Picker
-                        selectedValue={item.quantity}
-                        onValueChange={quantity => {
-                          this.changeQuantity(item.id, quantity);
-                        }}
-                        style={{ flex: 1, width: 90, height: 30 }}>
-                        {pickerList}
-                      </Picker>
-                    </View>
-                  </View>
-                  <View style={Styles.desContainer}>
-                    <Text style={Styles.desText}>{item.name}</Text>
-                    <Text style={Styles.priceText}>$ {item.price}</Text>
-                    <Rating readonly startingValue={rating} imageSize={10} />
+                  )}
+                  <View style={Styles.pickerView}>
+                    <Picker
+                      selectedValue={item.quantity}
+                      onValueChange={quantity => {
+                        this.changeQuantity(item.id, quantity);
+                      }}
+                      style={{ flex: 1, width: 90, height: 30 }}>
+                      {pickerList}
+                    </Picker>
                   </View>
                 </View>
-              );
-            }}
-          />
-
+                <View style={Styles.desContainer}>
+                  <Text style={Styles.desText}>{item.name}</Text>
+                  <Text style={Styles.priceText}>$ {item.price}</Text>
+                  <Rating readonly startingValue={rating} imageSize={10} />
+                </View>
+              </View>
+            );
+          })}
           <View style={Styles.horizontalLine} />
 
           <View style={Styles.couponView}>
@@ -186,7 +183,11 @@ export default class Cart extends Component {
             </View>
           </View>
 
-          <Button title="CHECKOUT" buttonStyle={Styles.buttonStyle} />
+          <Button
+            onPress={() => this.props.navigation.navigate('Checkout')}
+            title="CHECKOUT"
+            buttonStyle={Styles.buttonStyle}
+          />
         </ScrollView>
       </View>
     );
