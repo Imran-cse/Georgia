@@ -10,10 +10,16 @@ import {
 
 import { Rating } from 'react-native-elements';
 
+import QuantityModal from '../Common/QuantityModal';
 import { getCategory } from '../../server/fetch';
 import SearchBar from '../Search/SerchBar';
 import ProductItemView from '../Products/ProductItemView';
-
+import {
+  fetchCartData,
+  fetchWishlist,
+  updateCart,
+  upldateWishlist,
+} from '../../constants/constant_functions';
 import Styles from './Styles';
 import SpinView from '../Common/SpinView';
 
@@ -31,7 +37,21 @@ export default class Search extends Component {
       count: count,
       page: 1,
       isLoading: false,
+      cart: {},
+      wishList: {},
+      isModalVisible: false,
     };
+  }
+
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      fetchWishlist(this);
+      fetchCartData(this);
+    });
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
   async updateData() {
@@ -59,6 +79,29 @@ export default class Search extends Component {
 
       this.setState({ data, count, isLoading: false });
     }
+  }
+
+  updateState(obj) {
+    this.setState(obj);
+  }
+
+  handleWishlist(item) {
+    let { wishList } = this.state;
+    const { id, name, average_rating, price, images } = item;
+    wishList[id.toString()] = { name, average_rating, price, images };
+
+    upldateWishlist(wishList, this);
+  }
+
+  async handleCart(quantity) {
+    const { cart, isModalVisible, item } = this.state;
+    const { id, name, average_rating, price, images } = item;
+    cart[id.toString()] = { name, average_rating, quantity, price, images };
+
+    await updateCart(cart, this);
+    this.setState({ item: undefined, isModalVisible: false }, () => {
+      alert('Product added to cart');
+    });
   }
 
   async loadMore() {
@@ -90,10 +133,25 @@ export default class Search extends Component {
     //   this.updateData();
     // }
 
-    const { data, count, searchText, showLoading } = this.state;
+    const {
+      data,
+      count,
+      searchText,
+      isModalVisible,
+      showLoading,
+      isLoading,
+      wishList,
+      cart
+    } = this.state;
 
     return (
       <View style={Styles.container}>
+        <QuantityModal
+          isModalVisible={this.state.isModalVisible}
+          updateState={this.updateState.bind(this)}
+          handleCart={this.handleCart.bind(this)}
+        />
+
         <Text style={Styles.searchHeadText}>Search</Text>
         <View style={{ marginHorizontal: 20, marginVertical: 10 }}>
           <SearchBar
@@ -119,7 +177,9 @@ export default class Search extends Component {
                 <ProductItemView
                   item={item}
                   navigation={navigation}
-                  from="Search"
+                  handleWishlist={this.handleWishlist.bind(this)}
+                  isWished={wishList.hasOwnProperty(item.id)}
+                  updateState={this.updateState.bind(this)}
                 />
               );
             }}
