@@ -174,7 +174,7 @@ export default class Cart extends Component {
             </View>
             <View style={Styles.rowView}>
               <Text style={Styles.bigText}>Sub Total</Text>
-              <Text style={Styles.bigText}>$ {totalPrice}</Text>
+              <Text style={Styles.bigText}>$ {totalPrice.toFixed(2)}</Text>
             </View>
             <View style={Styles.rowView}>
               <Text style={Styles.smallText}>Tax</Text>
@@ -182,7 +182,7 @@ export default class Cart extends Component {
             </View>
             <View style={Styles.rowView}>
               <Text style={Styles.bigText}>Total</Text>
-              <Text style={Styles.bigText}>$ {totalPrice}</Text>
+              <Text style={Styles.bigText}>$ {totalPrice.toFixed(2)}</Text>
             </View>
           </View>
 
