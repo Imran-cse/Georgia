@@ -80,7 +80,7 @@ export async function request() {
         // console.log(data[0])
         data.map((item, index) => {
           if (item.slug.includes('banner')) {
-            console.log(item.guid.rendered);
+            // console.log(item.guid.rendered);
             return item.guid.rendered;
           }
         });

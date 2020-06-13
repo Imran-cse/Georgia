@@ -1,7 +1,15 @@
 import React from 'react';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+  EventEmitter,
+} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Badge } from 'react-native-elements';
+import AsyncStoragte from '@react-native-community/async-storage';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 import Search from '../components/Search/Search';
 import {
@@ -18,17 +26,37 @@ const Tab = createBottomTabNavigator();
 
 export const TabStack = ({ navigation }) => {
   const options = { tabBarButton: props => <TouchableOpacity {...props} /> };
-  // // const [cartCount, setCount] = React.useState(0);
+  const [cartCount, setCount] = React.useState(0);
 
   // var cartCount;
 
+  React.useEffect(() => {
+    async function getCartCount() {
+      const res = await AsyncStoragte.getItem('cart');
+      let temp = res ? JSON.parse(res) : {};
+      console.log('in tab', Object.keys(temp).length);
+      setCount(Object.keys(temp).length);
+    }
+    console.log('hello');
+
+    getCartCount();
+    return () => getCartCount();
+  });
+
   // React.useEffect(() => {
-  //   cartCount =  fetchCartDataCount()
-  // })
+  //   const unsubscribe = navigation.addListener('state', async () => {
+  //     const res = await AsyncStoragte.getItem('cart');
+  //     let temp = res ? JSON.parse(res) : {};
+  //     console.log('in tab', Object.keys(temp).length);
+  //     setCount(Object.keys(temp).length);
+  //   });
+
+  //   return unsubscribe;
+  // }, [navigation]);
 
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+      screenOptions={({ route, navigation }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === 'Home') {
             return focused ? (
@@ -74,17 +102,31 @@ export const TabStack = ({ navigation }) => {
             );
           } else if (route.name === 'Cart') {
             return focused ? (
-              <Image
-                source={require('../assets/home1/footer_cart_icon1.png')}
-                style={Styles.tabIcon}
-                resizeMode="contain"
-              />
+              <View>
+                <Image
+                  source={require('../assets/home1/footer_cart_icon1.png')}
+                  style={Styles.tabIcon}
+                  resizeMode="contain"
+                />
+                <Badge
+                  value={cartCount}
+                  badgeStyle={{ backgroundColor: 'red' }}
+                  containerStyle={{ position: 'absolute', top: -5, right: -5 }}
+                />
+              </View>
             ) : (
-              <Image
-                source={require('../assets/home1/footer_cart_icon.png')}
-                style={Styles.tabIcon}
-                resizeMode="contain"
-              />
+              <View>
+                <Image
+                  source={require('../assets/home1/footer_cart_icon.png')}
+                  style={Styles.tabIcon}
+                  resizeMode="contain"
+                />
+                <Badge
+                  value={cartCount}
+                  badgeStyle={{ backgroundColor: 'red' }}
+                  containerStyle={{ position: 'absolute', top: -5, right: -5 }}
+                />
+              </View>
             );
           } else if (route.name === 'Account') {
             return focused ? (

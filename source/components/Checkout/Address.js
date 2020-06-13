@@ -11,9 +11,32 @@ import Styles from './Styles';
 export default class Address extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      firstName: undefined,
+      lastName: undefined,
+      phoneNumber: undefined,
+      email: undefined,
+      country: undefined,
+      state: undefined,
+      city: undefined,
+      street: undefined,
+      zipCode: undefined,
+    };
   }
 
   render() {
+    const {
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      country,
+      state,
+      city,
+      street,
+      zipCode,
+    } = this.state;
+
     return (
       <View style={Styles.container}>
         <Header headerText="Checkout" navigation={this.props.navigation} />
@@ -25,19 +48,31 @@ export default class Address extends Component {
             <Form>
               <Item floatingLabel style={Styles.formItem}>
                 <Label>First Name</Label>
-                <Input />
+                <Input
+                  value={firstName}
+                  onChangeText={firstName => this.setState({ firstName })}
+                />
               </Item>
               <Item floatingLabel style={Styles.formItem}>
                 <Label>Last Name</Label>
-                <Input />
+                <Input
+                  value={lastName}
+                  onChangeText={lastName => this.setState({ lastName })}
+                />
               </Item>
               <Item floatingLabel style={Styles.formItem}>
                 <Label>Phone Number</Label>
-                <Input />
+                <Input
+                  value={phoneNumber}
+                  onChangeText={phoneNumber => this.setState({ phoneNumber })}
+                />
               </Item>
               <Item floatingLabel style={Styles.formItem}>
                 <Label>Email</Label>
-                <Input />
+                <Input
+                  value={email}
+                  onChangeText={email => this.setState({ email })}
+                />
               </Item>
             </Form>
 
@@ -89,15 +124,24 @@ export default class Address extends Component {
             <Form>
               <Item floatingLabel style={Styles.formItem}>
                 <Label>City</Label>
-                <Input />
+                <Input
+                  value={city}
+                  onChangeText={city => this.setState({ city })}
+                />
               </Item>
               <Item floatingLabel style={Styles.formItem}>
                 <Label>Street Name</Label>
-                <Input />
+                <Input
+                  value={street}
+                  onChangeText={street => this.setState({ street })}
+                />
               </Item>
               <Item floatingLabel style={Styles.formItem}>
                 <Label>Zip-code</Label>
-                <Input />
+                <Input
+                  value={zipCode}
+                  onChangeText={zipCode => this.setState({ zipCode })}
+                />
               </Item>
             </Form>
 

@@ -29,7 +29,8 @@ export const fetchCartData = async context => {
 export const fetchCartDataCount = async () => {
   const res = await AsyncStorage.getItem('cart');
   const count = res ? JSON.parse(res) : {}
-  return Object.keys(count).length;
+  // return Object.keys(count).length;
+  return 2
 }
 
 export const updateCart = async (cart, context) => {

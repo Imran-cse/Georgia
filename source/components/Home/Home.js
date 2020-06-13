@@ -54,9 +54,9 @@ export default class Home extends Component {
       'products/categories?search=featured-products&',
     );
     const response = await Promise.resolve(result.json());
-    console.log('respones', JSON.stringify(response));
+    // console.log('respones', JSON.stringify(response));
     const head1 = result.headers.get('X-WP-Total');
-    console.log('head1: ', head1);
+    // console.log('head1: ', head1);
     const catId = response[0].id;
     const result2 = await getCategory(`products?category=${catId}&`);
     const data = await Promise.resolve(result2.json());
