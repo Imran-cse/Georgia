@@ -4,29 +4,73 @@ import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 import Header from './Header';
-
+import { getUserAsync } from '../../constants/constant_functions';
 import Styles from './Styles';
 
 export default class Account extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      user: undefined,
+    };
+
+    this.checkLogin();
+  }
+
+  async checkLogin() {
+    console.log('came to account');
+    const user = await getUserAsync();
+    if (user !== null) {
+      this.setState({ user: JSON.parse(user) });
+    }
   }
 
   render() {
+    const { user } = this.state;
+
     return (
       <View style={Styles.container}>
         <Header />
-        <TouchableOpacity
-          onPress={() =>
-            this.props.navigation.navigate('Auth', { screen: 'Login' })
-          }
-          style={Styles.loginView}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Icon name="user" type="feather" size={25} />
-            <Text style={Styles.loginText}>Login</Text>
+        {!user && (
+          <TouchableOpacity
+            onPress={() =>
+              this.props.navigation.navigate('Auth', { screen: 'Login' })
+            }
+            style={Styles.loginView}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Icon name="user" type="feather" size={25} />
+              <Text style={Styles.loginText}>Login</Text>
+            </View>
+            <Icon name="ios-arrow-forward" type="ionicon" />
+          </TouchableOpacity>
+        )}
+
+        {!!user && (
+          <View>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('Auth', { screen: 'Login' })
+              }
+              style={Styles.loginView}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Icon name="user" type="feather" size={25} />
+            <Text style={Styles.loginText}>{user.name}</Text>
+              </View>
+              <Icon name="ios-arrow-forward" type="ionicon" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('Auth', { screen: 'Login' })
+              }
+              style={Styles.loginView}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Icon name="user" type="feather" size={25} />
+                <Text style={Styles.loginText}>{user.email}</Text>
+              </View>
+              <Icon name="ios-arrow-forward" type="ionicon" />
+            </TouchableOpacity>
           </View>
-          <Icon name="ios-arrow-forward" type="ionicon" />
-        </TouchableOpacity>
+        )}
 
         <View style={Styles.horizontalLine} />
 

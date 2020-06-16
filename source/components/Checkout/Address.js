@@ -3,10 +3,13 @@ import { View, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
 
 import { Form, Item, Input, Label, Picker } from 'native-base';
 import { Button } from 'react-native-elements';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import ChekcoutSteps from './CheckoutSteps';
 import Header from '../Common/Header';
 import Styles from './Styles';
+import { coutriesJson } from '../../constants/countries';
+import { fetchAddress } from '../../constants/constant_functions';
 
 export default class Address extends Component {
   constructor(props) {
@@ -21,7 +24,118 @@ export default class Address extends Component {
       city: undefined,
       street: undefined,
       zipCode: undefined,
+      address: {},
     };
+
+    this.fetchAddress();
+  }
+
+  async fetchAddress() {
+    await fetchAddress(this);
+
+    // const {
+    //   firstName,
+    //   lastName,
+    //   phoneNumber,
+    //   email,
+    //   country,
+    //   state,
+    //   city,
+    //   street,
+    //   zipCode,
+    // } = this.state.address;
+    console.log(this.state.address);
+    this.setState({ ...this.state.address });
+  }
+
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      fetchAddress(this);
+    });
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
+  async validation() {
+    const {
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      country,
+      state,
+      city,
+      street,
+      zipCode,
+    } = this.state;
+    if (firstName === undefined) {
+      alert('Please give your first name');
+      return false;
+    } else if (lastName === undefined) {
+      alert('Please give your lastname!');
+      return false;
+    } else if (phoneNumber === undefined) {
+      alert('Please give your phone number!');
+      return false;
+    } else if (email === undefined) {
+      alert('Please give your email!');
+      return false;
+    } else if (country === undefined) {
+      alert('Please select country!');
+      return false;
+    } else if (city === undefined) {
+      alert('Please give your city!');
+      return false;
+    } else if (street === undefined) {
+      alert('Please give your street address!');
+      return false;
+    } else if (zipCode === undefined) {
+      alert('Please give your zip code!');
+      return false;
+    } else return true;
+  }
+
+  async handleAddress() {
+    const {
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      country,
+      state,
+      city,
+      street,
+      zipCode,
+    } = this.state;
+
+    let address = {
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      country,
+      state,
+      city,
+      street,
+      zipCode,
+    };
+
+    let vald = await this.validation();
+    // console.log('vald', vald);
+    if (vald === false) {
+      return;
+    }
+
+    try {
+      await AsyncStorage.setItem('address', JSON.stringify(address), err =>
+        console.log(err),
+      );
+      this.props.navigation.navigate('Shipping');
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
@@ -35,7 +149,38 @@ export default class Address extends Component {
       city,
       street,
       zipCode,
+      selectedIndex,
     } = this.state;
+
+    console.log('in render', this.state);
+
+    let countryList = [];
+    var stateList = [];
+
+    for (let index = 0; index < coutriesJson.length; index++) {
+      // console.log(coutriesJson[index]);
+      if (!!coutriesJson[index].country) {
+        countryList.push(
+          <Picker.Item
+            label={coutriesJson[index].country}
+            value={coutriesJson[index].country}
+            key={index}
+          />,
+        );
+      }
+    }
+
+    if (selectedIndex || selectedIndex === 0) {
+      if (coutriesJson[selectedIndex].states.length > 0) {
+        const states = coutriesJson[selectedIndex].states;
+        for (let i = 0; i < states.length; i++) {
+          console.log('came here', states[i]);
+          stateList.push(
+            <Picker.Item label={states[i]} value={states[i]} key={i} />,
+          );
+        }
+      }
+    }
 
     return (
       <View style={Styles.container}>
@@ -49,29 +194,42 @@ export default class Address extends Component {
               <Item floatingLabel style={Styles.formItem}>
                 <Label>First Name</Label>
                 <Input
+                  getRef={input => (this.firstNameRef = input)}
                   value={firstName}
                   onChangeText={firstName => this.setState({ firstName })}
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.lastNameRef._root.focus()}
                 />
               </Item>
               <Item floatingLabel style={Styles.formItem}>
                 <Label>Last Name</Label>
                 <Input
+                  getRef={input => (this.lastNameRef = input)}
                   value={lastName}
                   onChangeText={lastName => this.setState({ lastName })}
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.phoneNumberRef._root.focus()}
                 />
               </Item>
               <Item floatingLabel style={Styles.formItem}>
                 <Label>Phone Number</Label>
                 <Input
+                  getRef={input => (this.phoneNumberRef = input)}
                   value={phoneNumber}
+                  returnKeyType="next"
                   onChangeText={phoneNumber => this.setState({ phoneNumber })}
+                  onSubmitEditing={() => this.emailRef._root.focus()}
+                  keyboardType="phone-pad"
                 />
               </Item>
               <Item floatingLabel style={Styles.formItem}>
                 <Label>Email</Label>
                 <Input
+                  getRef={input => (this.emailRef = input)}
                   value={email}
                   onChangeText={email => this.setState({ email })}
+                  keyboardType="email-address"
+                  // onSubmitEditing={() => this.phoneNumberRef._root.focus()}
                 />
               </Item>
             </Form>
@@ -106,17 +264,25 @@ export default class Address extends Component {
             <View style={Styles.pickerContainer}>
               <Text>Country</Text>
               <View style={Styles.pickerView}>
-                <Picker>
-                  <Picker.Item label="Select Country" />
+                <Picker
+                  selectedValue={country}
+                  mode="dropdown"
+                  onValueChange={(value, index) =>
+                    this.setState({ country: value, selectedIndex: index })
+                  }>
+                  {countryList}
                 </Picker>
               </View>
             </View>
 
             <View style={Styles.pickerContainer}>
-              <Text>Select/Province</Text>
+              <Text>State/Province</Text>
               <View style={Styles.pickerView}>
-                <Picker>
-                  <Picker.Item label="Select State" />
+                <Picker
+                  selectedValue={state}
+                  mode="dropdown"
+                  onValueChange={value => this.setState({ state: value })}>
+                  {stateList}
                 </Picker>
               </View>
             </View>
@@ -127,6 +293,9 @@ export default class Address extends Component {
                 <Input
                   value={city}
                   onChangeText={city => this.setState({ city })}
+                  getRef={input => (this.cityRef = input)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.streetRef._root.focus()}
                 />
               </Item>
               <Item floatingLabel style={Styles.formItem}>
@@ -134,6 +303,9 @@ export default class Address extends Component {
                 <Input
                   value={street}
                   onChangeText={street => this.setState({ street })}
+                  getRef={input => (this.streetRef = input)}
+                  onSubmitEditing={() => this.zipRef._root.focus()}
+                  returnKeyType="next"
                 />
               </Item>
               <Item floatingLabel style={Styles.formItem}>
@@ -141,6 +313,8 @@ export default class Address extends Component {
                 <Input
                   value={zipCode}
                   onChangeText={zipCode => this.setState({ zipCode })}
+                  getRef={input => (this.zipRef = input)}
+                  onSubmitEditing={() => this.handleAddress()}
                 />
               </Item>
             </Form>
@@ -153,7 +327,7 @@ export default class Address extends Component {
               />
 
               <Button
-                onPress={() => this.props.navigation.navigate('Shipping')}
+                onPress={() => this.handleAddress()}
                 title="CONTINUE TO SHIPPING"
                 buttonStyle={Styles.continueButton}
               />

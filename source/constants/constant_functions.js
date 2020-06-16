@@ -19,6 +19,16 @@ export const getUserAsync = async () => {
   return user;
 };
 
+export const multiset = async (user, token) => {
+  const firstPair = ['user', JSON.stringify(user)];
+  const secondPair = ['token', JSON.stringify(token)];
+  try {
+    await AsyncStorage.multiSet([firstPair, secondPair]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const fetchCartData = async context => {
   await AsyncStorage.getItem('cart', (err, res) => {
     const cart = res ? JSON.parse(res) : {};
@@ -26,12 +36,19 @@ export const fetchCartData = async context => {
   });
 };
 
+export const fetchAddress = async context => {
+  await AsyncStorage.getItem('address', (err, res) => {
+    const address = res ? JSON.parse(res) : {};
+    context.setState({ address });
+  });
+};
+
 export const fetchCartDataCount = async () => {
   const res = await AsyncStorage.getItem('cart');
-  const count = res ? JSON.parse(res) : {}
+  const count = res ? JSON.parse(res) : {};
   // return Object.keys(count).length;
-  return 2
-}
+  return 2;
+};
 
 export const updateCart = async (cart, context) => {
   await AsyncStorage.setItem('cart', JSON.stringify(cart), (err, res) => {
@@ -53,5 +70,5 @@ export const fetchWishlist = async context => {
   await AsyncStorage.getItem('wishList', (err, res) => {
     const wishList = res ? JSON.parse(res) : {};
     context.setState({ wishList });
-  })
-}
+  });
+};

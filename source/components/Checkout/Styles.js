@@ -120,5 +120,17 @@ export default StyleSheet.create({
     fontSize: moderateScale(16),
     fontWeight: 'bold',
     opacity: 0.5
+  },
+  addressRow: {
+    flexDirection: 'row',
+    marginHorizontal: moderateScale(20),
+    paddingBottom: 2,
+    opacity: 0.7
+  },
+  firstColumn: {
+    flex: 4,
+  },
+  secondColumn: {
+    flex: 6
   }
 });

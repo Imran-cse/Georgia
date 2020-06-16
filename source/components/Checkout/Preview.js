@@ -6,25 +6,35 @@ import { Icon, Button, Rating } from 'react-native-elements';
 
 import Header from '../Common/Header';
 import ChekcoutSteps from './CheckoutSteps';
+import PreviewAddress from './PreviewAddress';
 import Styles from './Styles';
 import Styles1 from '../Cart/Styles';
-import { fetchCartData, updateCart } from '../../constants/constant_functions';
+import {
+  fetchCartData,
+  updateCart,
+  fetchAddress,
+} from '../../constants/constant_functions';
 
 export default class Preview extends Component {
   constructor(props) {
     super(props);
     this.state = {
       cart: {},
+      address: {}
     };
+
+    this.fetchCartData();
   }
 
   async fetchCartData() {
     await fetchCartData(this);
+    await fetchAddress(this);
   }
 
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       fetchCartData(this);
+      fetchAddress(this);
     });
   }
 
@@ -47,7 +57,7 @@ export default class Preview extends Component {
   }
 
   render() {
-    const { cart } = this.state;
+    const { cart, address } = this.state;
     console.log('cart in preview', cart);
 
     let productCount = 0;
@@ -82,6 +92,8 @@ export default class Preview extends Component {
               <Text style={Styles.shipText}>Shipping Address</Text>
             </View>
 
+            <PreviewAddress address={address} />
+
             <View>
               <Text style={Styles.orderDetailLabel}>Order details</Text>
 
@@ -111,6 +123,7 @@ export default class Preview extends Component {
                       <View style={Styles1.pickerView}>
                         <Picker
                           selectedValue={item.quantity}
+                          mode="dropdown"
                           onValueChange={quantity => {
                             this.changeQuantity(item.id, quantity);
                           }}

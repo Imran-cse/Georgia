@@ -69,7 +69,6 @@ export default class Home extends Component {
       .then(res => res.json())
       .then(data => {
         let tempImages = this.state.images;
-
         data.map((item, index) => {
           if (item.slug.includes('banner')) {
             // console.log(item.guid.rendered);

@@ -14,11 +14,12 @@ export default class Shipping extends Component {
       freeShiping: true,
       flatRate: false,
       localPickup: false,
+      method: 'freeShiping',
     };
   }
 
   render() {
-    const { flatRate, freeShiping, localPickup } = this.state;
+    const { flatRate, freeShiping, localPickup, method } = this.state;
 
     return (
       <View style={Styles.container}>
@@ -39,6 +40,7 @@ export default class Shipping extends Component {
                   freeShiping: true,
                   flatRate: false,
                   localPickup: false,
+                  method: 'freeShiping',
                 })
               }
               uncheckedIcon="circle-o"
@@ -60,6 +62,7 @@ export default class Shipping extends Component {
                   freeShiping: false,
                   flatRate: true,
                   localPickup: false,
+                  method: 'flatRate',
                 })
               }
               checkedIcon="dot-circle-o"
@@ -83,6 +86,7 @@ export default class Shipping extends Component {
                   freeShiping: false,
                   flatRate: false,
                   localPickup: true,
+                  method: 'localPickup',
                 })
               }
               uncheckedIcon="circle-o"
@@ -101,10 +105,16 @@ export default class Shipping extends Component {
           </View>
         </View>
 
-        <Button onPress={() => this.props.navigation.navigate('Preview')} title="CONTIUE TO SHIPPING" buttonStyle={Styles.shipButton} />
+        <Button
+          onPress={() => this.props.navigation.navigate('Preview')}
+          title="CONTIUE TO SHIPPING"
+          buttonStyle={Styles.shipButton}
+        />
 
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate('Address')}
+          onPress={() =>
+            this.props.navigation.navigate('Address', { shipMethod: method })
+          }
           style={Styles.backView}>
           <Text style={{ textDecorationLine: 'underline' }}>
             Go back to address

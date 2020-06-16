@@ -28,6 +28,7 @@ const QuantityModal = props => {
         <View style={Styles.pickerView}>
           <Picker
             selectedValue={selectedQuantity}
+            mode='dropdown'
             onValueChange={value => {
               // setQuantity(value);
               props.handleCart(value);

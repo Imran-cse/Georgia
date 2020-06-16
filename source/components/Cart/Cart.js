@@ -132,6 +132,7 @@ export default class Cart extends Component {
                   <View style={Styles.pickerView}>
                     <Picker
                       selectedValue={item.quantity}
+                      mode='dropdown'
                       onValueChange={quantity => {
                         this.changeQuantity(item.id, quantity);
                       }}

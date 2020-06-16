@@ -17,23 +17,6 @@ let headers = new Headers();
 headers.append('Content-Type', 'application/json');
 // headers.append('Authorization', 'Basic ' + userName + ':' + passsword);
 
-// export async function request() {
-//   try {
-//     let response = await fetch(base_url, {
-//       headers: headers,
-//       mode: 'cors',
-//       method: 'GET',
-//       credentials: 'include',
-//       redirect: 'follow'
-//     });
-//     let json = response.json();
-//     console.log('res:', JSON.stringify(json));
-//     return JSON.stringify(json);
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
 export const config = {
   headers: headers,
   mode: 'cors',
@@ -42,23 +25,68 @@ export const config = {
   redirect: 'follow',
 };
 
+let authConfig = {
+  headers: headers,
+  mode: 'cors',
+  method: 'POST',
+  credentials: 'include',
+};
+
+export async function login(username, password) {
+  console.log(username, password);
+  const data = { username, password };
+  authConfig.body = JSON.stringify(data);
+  console.log(authConfig);
+  try {
+    const response = await fetch(
+      'https://www.georgiaphonecase.com/wp-json/jwt-auth/v1/token',
+      authConfig,
+    );
+    return response;
+  } catch (error) {
+    console.log(err);
+  }
+}
+
+export async function signup(data, endpoint) {
+  console.log(data);
+  authConfig.body = JSON.stringify(data);
+  console.log(base_url2 + endpoint + authParam);
+  console.log(authConfig);
+  try {
+    const respose = await fetch(base_url2 + endpoint + authParam, authConfig);
+    return respose;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function getCategory(endpoint) {
-  // return await fetch(base_url2 + endpoint + authParam, config)
-  //   .then(res => {
-  //     console.log('total result', res.headers.get('X-WP-Total'));
-  //     return res;
-  //   })
-  //   .then(data => {
-  //     return {
-  //       data: data.json(),
-  //       head: data.headers.get('X-WP-Total'),
-  //     };
-  //   })
-  //   .catch(err => console.log(err));
-  console.log('PATH ', base_url + endpoint + authParam);
   try {
     const respones = await fetch(base_url2 + endpoint + authParam, config);
     return respones;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getUser(token) {
+  let headers = new Headers({
+    'Content-Type': 'application/json',
+    'Authoriztion': 'Bearer ' + token
+ });
+  let config = {
+    headers: headers,
+    mode: 'cors',
+    method: 'GET',
+  };
+  console.log('getUser config: ', config);
+  try {
+    const response = await fetch(
+      'https://www.georgiaphonecase.com/wp-json/wp/v2/users/me',
+      config,
+    );
+    return response;
   } catch (error) {
     console.log(error);
   }
