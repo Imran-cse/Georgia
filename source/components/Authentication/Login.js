@@ -4,10 +4,15 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { Form, Item, Input, Label } from 'native-base';
 import { Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-community/async-storage';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-community/google-signin';
 
 import SpinView from '../Common/SpinView';
 import Styles from './Styles';
 import { login, getUser } from '../../server/fetch';
+import {config} from '../../../config'
 
 export default class Login extends Component {
   constructor(props) {
@@ -16,7 +21,43 @@ export default class Login extends Component {
       username: undefined,
       password: undefined,
       isLoading: false,
+      userInfo: undefined
     };
+  }
+
+  async componentDidMount() {
+    await this._configureGoogleSignIn();
+  }
+
+  async _configureGoogleSignIn() {
+    await GoogleSignin.configure({
+      webClientId: config.webClientId,
+      offlineAccess: true
+    })
+  }
+
+  signIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      this.setState({ userInfo });
+      console.log(userInfo);
+    } catch (error) {
+      console.log(error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        console.log('user cancelled the login flwo')
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+        console.log('sign in is in progress already')
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+        console.log('play services not available or outdated')
+      } else {
+        // some other error happened
+        console.log('some error happened')
+      }
+    }
   }
 
   async handleLogin() {
@@ -106,7 +147,7 @@ export default class Login extends Component {
               style={Styles.icon}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => this.signIn()}>
             <Image
               source={require('../../assets/auth/google_icon.png')}
               style={Styles.icon}
