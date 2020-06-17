@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Alert } from 'react-native';
 
 import { Form, Item, Input, Label } from 'native-base';
 import { Button } from 'react-native-elements';
@@ -8,6 +8,7 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-community/google-signin';
+import {LoginButton, LoginManager} from 'react-native-fbsdk';
 
 import SpinView from '../Common/SpinView';
 import Styles from './Styles';
@@ -141,6 +142,12 @@ export default class Login extends Component {
         </View>
 
         <View style={Styles.iconContainer}>
+        <LoginButton
+          onLoginFinished={(error, data) => {
+            console.log(error, data)
+            Alert.alert(JSON.stringify(error || data, null, 2));
+          }}
+        />
           <TouchableOpacity>
             <Image
               source={require('../../assets/auth/facebook_icon.png')}
