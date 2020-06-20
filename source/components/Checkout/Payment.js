@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 
-import {CheckBox} from 'react-native-elements'
+import { CheckBox, Button } from 'react-native-elements';
+import RNPaypal from 'react-native-paypal-lib';
 
 import Header from '../Common/Header';
 import CheckoutSteps from './CheckoutSteps';
@@ -10,14 +11,32 @@ import Styles from './Styles';
 export default class Payment extends Component {
   constructor(props) {
     super(props);
-    this.state={
-      paymentMethod: undefined
-    }
+    this.state = {
+      paymentMethod: undefined,
+    };
   }
 
-  render() {
+  handlePaypal() {
+    RNPaypal.paymentRequest({
+      clientId: 'AaMsQpgXR4knQrSgTy3YwyUFh09aV9tgMftpiFhGaUH-gjH9DhjKUe4TeD2jUQN0N53pBJh41kr8qqLQ',
+      environment: RNPaypal.ENVIRONMENT.SANDBOX,
+      intent: RNPaypal.INTENT.SALE,
+      price: 60,
+      currency: 'USD',
+      description: `Android testing`,
+      acceptCreditCards: true,
+    })
+      .then(response => {
+        console.log(response);
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  }
+
+  render() {  
     const { flatRate, freeShiping, localPickup, method } = this.state;
-    
+
     return (
       <View style={Styles.container}>
         <Header headerText="Checkout" navigation={this.props.navigation} />
@@ -62,12 +81,13 @@ export default class Payment extends Component {
             checked={flatRate}
             title={
               <View style={{ paddingLeft: 30 }}>
-                <Image source={require('../../assets/paypal.png')}
-                  style={{width: 200, height: 100, resizeMode: 'contain'}}
+                <Image
+                  source={require('../../assets/paypal.png')}
+                  style={{ width: 200, height: 100, resizeMode: 'contain' }}
                 />
               </View>
             }
-            containerStyle={{backgroundColor: 'white'}}
+            containerStyle={{ backgroundColor: 'white' }}
           />
           {/* <CheckBox
             checked={localPickup}
@@ -93,6 +113,12 @@ export default class Payment extends Component {
             ]}
           /> */}
         </View>
+
+        <Button
+          onPress={() => this.handlePaypal()}
+          title="CONTIUE TO SHIPPING"
+          buttonStyle={Styles.shipButton}
+        />
       </View>
     );
   }

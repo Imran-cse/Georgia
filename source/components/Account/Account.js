@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 
 import { Icon } from 'react-native-elements';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import Header from './Header';
+import Profile from './Profile';
 import { getUserAsync } from '../../constants/constant_functions';
 import Styles from './Styles';
 
@@ -17,12 +19,32 @@ export default class Account extends Component {
     this.checkLogin();
   }
 
+  async componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', async () => {
+      await this.checkLogin();
+    });
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
   async checkLogin() {
     console.log('came to account');
     const user = await getUserAsync();
     if (user !== null) {
-      this.setState({ user: JSON.parse(user) });
+      this.setState({ user: JSON.parse(user) }, () => console.log('hello'));
     }
+  }
+
+  async logout() {
+    await AsyncStorage.removeItem('user', error => {
+      console.log(error);
+      if (!error) {
+        this.setState({ user: undefined });
+      }
+      this.checkLogin();
+    });
   }
 
   render() {
@@ -45,32 +67,7 @@ export default class Account extends Component {
           </TouchableOpacity>
         )}
 
-        {!!user && (
-          <View>
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate('Auth', { screen: 'Login' })
-              }
-              style={Styles.loginView}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Icon name="user" type="feather" size={25} />
-            <Text style={Styles.loginText}>{user.name}</Text>
-              </View>
-              <Icon name="ios-arrow-forward" type="ionicon" />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() =>
-                this.props.navigation.navigate('Auth', { screen: 'Login' })
-              }
-              style={Styles.loginView}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <Icon name="user" type="feather" size={25} />
-                <Text style={Styles.loginText}>{user.email}</Text>
-              </View>
-              <Icon name="ios-arrow-forward" type="ionicon" />
-            </TouchableOpacity>
-          </View>
-        )}
+        {!!user && <Profile user={user} logout={this.logout.bind(this)} />}
 
         <View style={Styles.horizontalLine} />
 

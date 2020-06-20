@@ -1,16 +1,19 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { verticalScale, moderateScale } from '../../constants/constant_functions';
+import {
+  verticalScale,
+  moderateScale,
+} from '../../constants/constant_functions';
 
 export default StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    flex: 1
+    flex: 1,
   },
   headerContainer: {
     backgroundColor: 'red',
     flexDirection: 'row',
     height: verticalScale(60),
-    alignItems: 'center'
+    alignItems: 'center',
   },
   headerIcon: {
     // width: 25,
@@ -21,22 +24,30 @@ export default StyleSheet.create({
   headerText: {
     fontSize: moderateScale(18),
     color: 'white',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   loginView: {
     flexDirection: 'row',
     padding: moderateScale(20),
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+  },
+  profileItem: {
+    flexDirection: 'row',
+    padding: moderateScale(10),
+    paddingHorizontal: moderateScale(20),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    opacity: 0.7
   },
   loginText: {
-    fontSize: moderateScale(22),
-    paddingLeft: moderateScale(20)
+    fontSize: moderateScale(18),
+    paddingLeft: moderateScale(25),
   },
   horizontalLine: {
     height: 2,
     backgroundColor: 'grey',
-    opacity: 0.5
+    opacity: 0.5,
   },
   itemView: {
     flexDirection: 'row',
@@ -44,9 +55,16 @@ export default StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: moderateScale(20),
-    opacity: 0.7
+    opacity: 0.7,
   },
   itemText: {
-    fontSize: moderateScale(18)
-  }
-})
+    fontSize: moderateScale(18),
+  },
+  proImageContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 50,
+    overflow: 'hidden',
+    backgroundColor: 'grey',
+  },
+});
