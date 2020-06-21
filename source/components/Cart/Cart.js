@@ -4,14 +4,18 @@ import {
   Image,
   Text,
   TouchableOpacity,
-  FlatList,
   ScrollView,
+  Alert,
 } from 'react-native';
 
 import { Icon, Rating, Input, Button } from 'react-native-elements';
 import { Picker } from 'native-base';
 
-import { fetchCartData, updateCart } from '../../constants/constant_functions';
+import {
+  fetchCartData,
+  updateCart,
+  getUserAsync,
+} from '../../constants/constant_functions';
 import Styles from './Styles';
 
 export default class Cart extends Component {
@@ -19,6 +23,7 @@ export default class Cart extends Component {
     super(props);
     this.state = {
       cart: {},
+      user: undefined,
     };
 
     fetchCartData(this);
@@ -26,11 +31,16 @@ export default class Cart extends Component {
 
   async fetchCartData() {
     await fetchCartData(this);
+    const user = await getUserAsync();
+    if (user) {
+      this.setState({ user: JSON.parse(user) }, () => console.log('hello'));
+    }
   }
 
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       fetchCartData(this);
+      this.fetchCartData();
     });
   }
 
@@ -73,7 +83,7 @@ export default class Cart extends Component {
   }
 
   render() {
-    const { cart } = this.state;
+    const { cart, user } = this.state;
     console.log('cart', cart);
 
     let productCount = 0;
@@ -132,7 +142,7 @@ export default class Cart extends Component {
                   <View style={Styles.pickerView}>
                     <Picker
                       selectedValue={item.quantity}
-                      mode='dropdown'
+                      mode="dropdown"
                       onValueChange={quantity => {
                         this.changeQuantity(item.id, quantity);
                       }}
@@ -184,11 +194,31 @@ export default class Cart extends Component {
             </View>
           </View>
 
-          <Button
-            onPress={() => this.props.navigation.navigate('Checkout')}
-            title="CHECKOUT"
-            buttonStyle={Styles.buttonStyle}
-          />
+          {Object.keys(cart).length > 0 && (
+            <Button
+              onPress={() =>
+                !!user
+                  ? this.props.navigation.navigate('Checkout')
+                  : Alert.alert('Login', 'Please login to checkout', [
+                      {
+                        text: 'Cancel',
+                        onPress: () => console.log('Cancel pressed'),
+                        style: 'cancel',
+                      },
+                      {
+                        text: 'Ok',
+                        onPress: () =>
+                          this.props.navigation.navigate('Auth', {
+                            screen: 'Login',
+                          }),
+                        style: 'default',
+                      },
+                    ])
+              }
+              title="CHECKOUT"
+              buttonStyle={Styles.buttonStyle}
+            />
+          )}
         </ScrollView>
       </View>
     );
