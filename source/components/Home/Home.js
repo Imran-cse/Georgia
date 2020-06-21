@@ -4,13 +4,13 @@ import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 // import { SearchBar } from 'react-native-elements';
 import { SliderBox } from 'react-native-image-slider-box';
 import { Icon } from 'react-native-elements';
+import SnackBar from 'react-native-snackbar-component';
 
 import Header from './Header';
 import CategorySection from './CategorySection';
 import FeaturedProductSection from './FeaturedProductSection';
 import PopularPhoneSection from './PopularPhoneSection';
 import NewPhoneSection from './NewPhoneSection';
-import SearchBar from '../Search/SerchBar';
 import QuantityModal from '../Common/QuantityModal';
 
 import {
@@ -33,6 +33,7 @@ export default class Home extends Component {
       wishList: {},
       cart: {},
       isModalVisible: false,
+      isSnackVisible: false
     };
   }
 
@@ -116,9 +117,9 @@ export default class Home extends Component {
     cart[id.toString()] = { name, average_rating, quantity, price, images };
 
     await updateCart(cart, this);
-    this.setState({item: undefined, isModalVisible: false}, () => {
-      alert('Product added to cart')
-    })
+    this.setState({ item: undefined, isModalVisible: false, isSnackVisible: true }, () => {
+      // alert('Product added to cart');
+    });
   }
 
   render() {
@@ -128,6 +129,7 @@ export default class Home extends Component {
       searchText,
       featureCatId,
       wishList,
+      isSnackVisible
     } = this.state;
 
     return (
@@ -177,6 +179,15 @@ export default class Home extends Component {
 
           <NewPhoneSection navigation={this.props.navigation} />
         </ScrollView>
+        <SnackBar
+          visible={isSnackVisible}
+          autoHidingTime={3500}
+          textMessage="Product added to cart!"
+          actionHandler={() => {
+            this.setState({isSnackVisible: false})
+          }}
+          actionText="OK"
+        />
       </View>
     );
   }

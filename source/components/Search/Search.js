@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import { Rating } from 'react-native-elements';
+import SnackBar from 'react-native-snackbar-component';
 
 import QuantityModal from '../Common/QuantityModal';
 import { getCategory } from '../../server/fetch';
@@ -40,6 +41,7 @@ export default class Search extends Component {
       cart: {},
       wishList: {},
       isModalVisible: false,
+      isSnackVisible: false,
     };
   }
 
@@ -99,9 +101,12 @@ export default class Search extends Component {
     cart[id.toString()] = { name, average_rating, quantity, price, images };
 
     await updateCart(cart, this);
-    this.setState({ item: undefined, isModalVisible: false }, () => {
-      alert('Product added to cart');
-    });
+    this.setState(
+      { item: undefined, isModalVisible: false, isSnackVisible: true },
+      () => {
+        // alert('Product added to cart');
+      },
+    );
   }
 
   async loadMore() {
@@ -141,7 +146,8 @@ export default class Search extends Component {
       showLoading,
       isLoading,
       wishList,
-      cart
+      cart,
+      isSnackVisible
     } = this.state;
 
     return (
@@ -186,6 +192,16 @@ export default class Search extends Component {
           />
           {this.state.isLoading && <SpinView />}
         </View>
+
+        <SnackBar
+          visible={isSnackVisible}
+          autoHidingTime={3500}
+          textMessage="Product added to cart!"
+          actionHandler={() => {
+            this.setState({ isSnackVisible: false });
+          }}
+          actionText="OK"
+        />
       </View>
     );
   }
