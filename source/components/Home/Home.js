@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  NativeModules,
+  LayoutAnimation,
+} from 'react-native';
 
 // import { SearchBar } from 'react-native-elements';
 import { SliderBox } from 'react-native-image-slider-box';
@@ -21,6 +29,12 @@ import {
 } from '../../constants/constant_functions';
 import { base_url, config, base_url2, getCategory } from '../../server/fetch';
 import Styles from './Styles';
+import SpinView from '../Common/SpinView';
+
+const { UIManager } = NativeModules;
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 export default class Home extends Component {
   constructor(props) {
@@ -33,7 +47,7 @@ export default class Home extends Component {
       wishList: {},
       cart: {},
       isModalVisible: false,
-      isSnackVisible: false
+      isSnackVisible: false,
     };
   }
 
@@ -62,6 +76,7 @@ export default class Home extends Component {
     const result2 = await getCategory(`products?category=${catId}&`);
     const data = await Promise.resolve(result2.json());
     this.setState({ featuredProducts: data, featureCatId: catId });
+    LayoutAnimation.spring();
     // console.log(JSON.stringify(data));
   }
 
@@ -117,9 +132,14 @@ export default class Home extends Component {
     cart[id.toString()] = { name, average_rating, quantity, price, images };
 
     await updateCart(cart, this);
-    this.setState({ item: undefined, isModalVisible: false, isSnackVisible: true }, () => {
-      // alert('Product added to cart');
-    });
+    this.setState(
+      { item: undefined, isModalVisible: false, isSnackVisible: true },
+      () => {
+        setTimeout(() => {
+          this.setState({ isSnackVisible: false });
+        }, 3500);
+      },
+    );
   }
 
   render() {
@@ -129,7 +149,7 @@ export default class Home extends Component {
       searchText,
       featureCatId,
       wishList,
-      isSnackVisible
+      isSnackVisible,
     } = this.state;
 
     return (
@@ -157,7 +177,7 @@ export default class Home extends Component {
           <CategorySection navigation={this.props.navigation} />
           <View style={Styles.divider} />
 
-          {featuredProducts.length > 0 && (
+          {(featuredProducts.length > 0 && (
             <FeaturedProductSection
               products={featuredProducts}
               navigation={this.props.navigation}
@@ -166,7 +186,7 @@ export default class Home extends Component {
               handleWishlist={this.handleWishlist.bind(this)}
               updateState={this.updateState.bind(this)}
             />
-          )}
+          )) || <SpinView />}
 
           <View style={Styles.bannerContainer}>
             <Image
@@ -184,7 +204,7 @@ export default class Home extends Component {
           autoHidingTime={3500}
           textMessage="Product added to cart!"
           actionHandler={() => {
-            this.setState({isSnackVisible: false})
+            this.setState({ isSnackVisible: false });
           }}
           actionText="OK"
         />

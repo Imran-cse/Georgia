@@ -121,11 +121,11 @@ export const TabStack = ({ navigation }) => {
                   style={Styles.tabIcon}
                   resizeMode="contain"
                 />
-                <Badge
+                {/* <Badge
                   value={cartCount}
                   badgeStyle={{ backgroundColor: 'red' }}
                   containerStyle={{ position: 'absolute', top: -5, right: -5 }}
-                />
+                /> */}
               </View>
             );
           } else if (route.name === 'Account') {

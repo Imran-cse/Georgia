@@ -104,7 +104,9 @@ export default class Search extends Component {
     this.setState(
       { item: undefined, isModalVisible: false, isSnackVisible: true },
       () => {
-        // alert('Product added to cart');
+        setTimeout(() => {
+          this.setState({ isSnackVisible: false });
+        }, 3500);
       },
     );
   }
@@ -147,7 +149,7 @@ export default class Search extends Component {
       isLoading,
       wishList,
       cart,
-      isSnackVisible
+      isSnackVisible,
     } = this.state;
 
     return (

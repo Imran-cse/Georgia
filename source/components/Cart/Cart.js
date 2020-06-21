@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  NativeModules,
+  LayoutAnimation,
 } from 'react-native';
 
 import { Icon, Rating, Input, Button } from 'react-native-elements';
@@ -17,6 +19,10 @@ import {
   getUserAsync,
 } from '../../constants/constant_functions';
 import Styles from './Styles';
+
+const { UIManager } = NativeModules;
+UIManager.setLayoutAnimationEnabledExperimental &&
+  UIManager.setLayoutAnimationEnabledExperimental(true);
 
 export default class Cart extends Component {
   constructor(props) {
@@ -30,6 +36,7 @@ export default class Cart extends Component {
   }
 
   async fetchCartData() {
+    LayoutAnimation.easeInEaseOut()
     await fetchCartData(this);
     const user = await getUserAsync();
     if (user) {
@@ -41,6 +48,7 @@ export default class Cart extends Component {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       fetchCartData(this);
       this.fetchCartData();
+      LayoutAnimation.easeInEaseOut();
     });
   }
 
@@ -49,6 +57,7 @@ export default class Cart extends Component {
   }
 
   async removeFromCart(id) {
+    LayoutAnimation.easeInEaseOut();
     let { cart } = this.state;
     delete cart[id];
     await upldatecart(cart, this);
@@ -64,6 +73,7 @@ export default class Cart extends Component {
 
   async removeFromCart(id) {
     let { cart } = this.state;
+    LayoutAnimation.easeInEaseOut();
 
     delete cart[id];
     await updateCart(cart, this);
@@ -71,6 +81,7 @@ export default class Cart extends Component {
   }
 
   async clearCart() {
+    LayoutAnimation.easeInEaseOut();
     const { cart } = this.state;
     for (const key in cart) {
       if (cart.hasOwnProperty(key)) {
