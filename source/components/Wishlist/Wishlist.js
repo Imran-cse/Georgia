@@ -10,7 +10,7 @@ import {
   fetchWishlist,
   upldateWishlist,
   updateCart,
-  fetchCartData
+  fetchCartData,
 } from '../../constants/constant_functions';
 
 export default class Wishlist extends Component {
@@ -32,7 +32,7 @@ export default class Wishlist extends Component {
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       fetchWishlist(this);
-      fetchCartData(this)
+      fetchCartData(this);
     });
   }
 
@@ -58,7 +58,7 @@ export default class Wishlist extends Component {
   }
 
   updateState(obj) {
-    this.setState(obj)
+    this.setState(obj);
   }
 
   render() {
@@ -69,6 +69,23 @@ export default class Wishlist extends Component {
       if (wishList.hasOwnProperty(key)) {
         arrWishlist.push({ ...wishList[key], id: key });
       }
+    }
+
+    if (Object.keys(wishList).length <= 0) {
+      return (
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+          <Header headerText="My Wishlist" navigation={this.props.navigation} />
+          <View style={Styles.emptyImageContainer}>
+            <Image source={require('../../assets/empty-wishlist.png')} />
+            <Text style={Styles.emptyText}>Your wishlist is empty!</Text>
+            <Button
+              onPress={() => this.props.navigation.goBack()}
+              title="LETS CREATE A WISH"
+              buttonStyle={Styles.emptyButton}
+            />
+          </View>
+        </View>
+      );
     }
 
     return (

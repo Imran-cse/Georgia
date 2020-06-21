@@ -70,5 +70,20 @@ export default StyleSheet.create({
     height: 30,
     paddingHorizontal: 10
     // width: moderateScale(200)
+  },
+  emptyImageContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  emptyText: {
+    fontSize: moderateScale(25),
+    paddingVertical: moderateScale(20),
+    textAlign: 'center'
+  },
+  emptyButton: {
+    backgroundColor: 'red',
+    padding: moderateScale(10),
+    paddingHorizontal: moderateScale(20)
   }
 })
