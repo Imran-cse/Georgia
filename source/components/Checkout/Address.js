@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Image, Text, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
 
 import { Form, Item, Input, Label, Picker } from 'native-base';
 import { Button } from 'react-native-elements';
@@ -133,6 +133,47 @@ export default class Address extends Component {
         console.log(err),
       );
       this.props.navigation.navigate('Shipping');
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async handleSave() {
+    const {
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      country,
+      state,
+      city,
+      street,
+      zipCode,
+    } = this.state;
+
+    let address = {
+      firstName,
+      lastName,
+      phoneNumber,
+      email,
+      country,
+      state,
+      city,
+      street,
+      zipCode,
+    };
+
+    let vald = await this.validation();
+    // console.log('vald', vald);
+    if (vald === false) {
+      return;
+    }
+
+    try {
+      await AsyncStorage.setItem('address', JSON.stringify(address), err =>
+        console.log(err),
+      );
+      ToastAndroid.show('Address saved!', ToastAndroid.SHORT);
     } catch (error) {
       console.log(error);
     }
@@ -321,6 +362,7 @@ export default class Address extends Component {
 
             <View style={Styles.buttonContainer}>
               <Button
+                onPress={() => this.handleSave()}
                 title="SAVE ADDRESS"
                 titleStyle={{ color: 'black' }}
                 buttonStyle={Styles.saveButton}

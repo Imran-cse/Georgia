@@ -70,11 +70,30 @@ export async function getCategory(endpoint) {
   }
 }
 
+export async function createOrder(endpoint, data) {
+  console.log('data', data);
+  let config = {
+    headers: headers,
+    mode: 'cors',
+    method: 'POST',
+    credentials: 'include',
+    redirect: 'follow',
+  };
+  config.body = JSON.stringify(data);
+  console.log('config:',config);
+  try {
+    const respones = await fetch(base_url2 + endpoint + authParam, config);
+    return respones;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function getUser(token) {
   let headers = new Headers({
     'Content-Type': 'application/json',
-    'Authoriztion': 'Bearer ' + token
- });
+    Authoriztion: 'Bearer ' + token,
+  });
   let config = {
     headers: headers,
     mode: 'cors',

@@ -1,41 +1,158 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 
 import { CheckBox, Button } from 'react-native-elements';
 import RNPaypal from 'react-native-paypal-lib';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import Header from '../Common/Header';
 import CheckoutSteps from './CheckoutSteps';
 import Styles from './Styles';
+import {
+  fetchCartData,
+  fetchAddress,
+  getUserAsync,
+} from '../../constants/constant_functions';
+import { getCategory, createOrder } from '../../server/fetch';
 
 export default class Payment extends Component {
   constructor(props) {
     super(props);
     this.state = {
       paymentMethod: undefined,
+      cart: {},
+      address: {},
+      user: undefined,
     };
+
+    this.fetchCartData();
   }
 
-  handlePaypal() {
+  async fetchCartData() {
+    await fetchCartData(this);
+    await fetchAddress(this);
+    const user = await getUserAsync();
+    if (user !== null) {
+      this.setState({ user: JSON.parse(user) }, () => console.log('hello'));
+    }
+  }
+
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      fetchCartData(this);
+      fetchAddress(this);
+    });
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
+  handlePaypal(totalPrice) {
     RNPaypal.paymentRequest({
-      clientId: 'AaMsQpgXR4knQrSgTy3YwyUFh09aV9tgMftpiFhGaUH-gjH9DhjKUe4TeD2jUQN0N53pBJh41kr8qqLQ',
-      environment: RNPaypal.ENVIRONMENT.SANDBOX,
+      clientId:
+        'ATIVABNxCzWD2YVgFthlYDffnw4Q3OtpjYWeaxvZCOCptezxmWfre3mkjXT3fBIpYutR3TWIlvQ7rpnf',
+      environment: RNPaypal.ENVIRONMENT.PRODUCTION,
       intent: RNPaypal.INTENT.SALE,
-      price: 60,
+      price: totalPrice,
       currency: 'USD',
       description: `Android testing`,
       acceptCreditCards: true,
     })
       .then(response => {
-        console.log(response);
+        console.log(response.response.id);
+        if (response.response && response.response.id) {
+          const transactionId = response.response.id;
+          this.placeOrder(transactionId);
+        }
       })
       .catch(err => {
         console.log(err.message);
       });
   }
 
-  render() {  
-    const { flatRate, freeShiping, localPickup, method } = this.state;
+  async placeOrder(transantionId) {
+    const { route } = this.props;
+    const {
+      subTotalPrice,
+      totalPrice,
+      note,
+      shipMethod,
+      shippingFee,
+    } = route.params;
+    const { address, cart, user } = this.state;
+    let lineItems = [];
+    for (const key in cart) {
+      if (cart.hasOwnProperty(key)) {
+        lineItems.push({ product_id: key, quantity: cart[key].quantity });
+      }
+    }
+    console.log('line items: ', lineItems);
+
+    const data = {
+      customer_id: user.userId,
+      customer_note: note,
+      payment_method: 'paypal',
+      payment_method_title: 'Paypal',
+      transaction_id: transantionId,
+      set_paid: true,
+      billing: {
+        first_name: address.firstName,
+        last_name: address.lastName,
+        address_1: address.street,
+        address_2: '',
+        city: address.city,
+        state: address.state,
+        postcode: address.zipCode,
+        country: address.country,
+        email: address.email,
+        phone: address.phoneNumber,
+      },
+      shipping: {
+        first_name: address.firstName,
+        last_name: address.lastName,
+        address_1: address.street,
+        address_2: '',
+        city: address.city,
+        state: address.state,
+        postcode: address.zipCode,
+        country: address.country,
+      },
+      line_items: [...lineItems],
+      shipping_lines: [
+        {
+          method_id: shipMethod.toLowerCase().replace(' ', '_'),
+          method_title: shipMethod,
+          total: String(shippingFee),
+        },
+      ],
+    };
+
+    const res = await createOrder('orders?', data);
+    const result = await Promise.resolve(res.json());
+    console.log(JSON.stringify(result));
+    if (result.id) {
+      await AsyncStorage.removeItem('cart', err => console.log(err));
+      Alert.alert('Success', 'Your has been placed successfully', [
+        {
+          text: 'Ok',
+          onPress: () => this.props.navigation.navigate('Home'),
+          style: 'default',
+        },
+      ]);
+    }
+  }
+
+  render() {
+    const { flatRate, freeShiping, localPickup } = this.state;
+    const { route } = this.props;
+    const {
+      subTotalPrice,
+      totalPrice,
+      note,
+      shipMethod,
+      shippingFee,
+    } = route.params;
 
     return (
       <View style={Styles.container}>
@@ -78,7 +195,7 @@ export default class Payment extends Component {
             }
             checkedIcon="dot-circle-o"
             uncheckedIcon="circle-o"
-            checked={flatRate}
+            checked={true}
             title={
               <View style={{ paddingLeft: 30 }}>
                 <Image
@@ -114,11 +231,34 @@ export default class Payment extends Component {
           /> */}
         </View>
 
+        <View style={Styles.totalView}>
+          <View style={Styles.rowView}>
+            <Text>Subtotal</Text>
+            <Text>$ {subTotalPrice}</Text>
+          </View>
+          <View style={Styles.rowView}>
+            <Text>{shipMethod}</Text>
+            <Text>$ {shippingFee}</Text>
+          </View>
+          <View style={Styles.rowView}>
+            <Text>Total</Text>
+            <Text style={Styles.totalPrice}>$ {totalPrice}</Text>
+          </View>
+        </View>
+
         <Button
-          onPress={() => this.handlePaypal()}
-          title="CONTIUE TO SHIPPING"
+          onPress={() => this.handlePaypal(totalPrice)}
+          title="PLACE MY ORDER"
           buttonStyle={Styles.shipButton}
         />
+
+        <TouchableOpacity
+          onPress={() => this.props.navigation.goBack()}
+          style={Styles.backView}>
+          <Text style={{ textDecorationLine: 'underline' }}>
+            Go back to preview
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }

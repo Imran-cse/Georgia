@@ -13,6 +13,7 @@ import {
   fetchCartData,
   updateCart,
   fetchAddress,
+  moderateScale,
 } from '../../constants/constant_functions';
 
 export default class Preview extends Component {
@@ -20,7 +21,8 @@ export default class Preview extends Component {
     super(props);
     this.state = {
       cart: {},
-      address: {}
+      address: {},
+      note: undefined,
     };
 
     this.fetchCartData();
@@ -57,16 +59,18 @@ export default class Preview extends Component {
   }
 
   render() {
-    const { cart, address } = this.state;
-    console.log('cart in preview', cart);
+    const { cart, address, note } = this.state;
+    const { route } = this.props;
+    const { shipMethod, shippingFee } = route.params;
+    // console.log('cart in preview', cart);
 
     let productCount = 0;
-    let totalPrice = 0;
+    let subTotalPrice = 0;
     let arrCart = [];
     for (const key in cart) {
       if (cart.hasOwnProperty(key)) {
         arrCart.push({ ...cart[key], id: key });
-        totalPrice += Number(cart[key].quantity) * Number(cart[key].price);
+        subTotalPrice += Number(cart[key].quantity) * Number(cart[key].price);
         productCount += Number(cart[key].quantity);
       }
     }
@@ -77,6 +81,7 @@ export default class Preview extends Component {
         <Picker.Item label={`${index}`} key={index} value={index} />,
       );
     }
+    let totalPrice = subTotalPrice + shippingFee;
 
     console.log('arrCart', arrCart);
 
@@ -145,11 +150,11 @@ export default class Preview extends Component {
             <View style={Styles.totalView}>
               <View style={Styles.rowView}>
                 <Text>Subtotal</Text>
-                <Text>$ {totalPrice}</Text>
+                <Text>$ {subTotalPrice}</Text>
               </View>
               <View style={Styles.rowView}>
-                <Text>Flat rate</Text>
-                <Text>$ 20</Text>
+                <Text>{shipMethod}</Text>
+                <Text>$ {shippingFee}</Text>
               </View>
               <View style={Styles.rowView}>
                 <Text>Total</Text>
@@ -160,6 +165,8 @@ export default class Preview extends Component {
             <View style={Styles.noteView}>
               <Text style={Styles.noteText}>Your note</Text>
               <TextInput
+                value={note}
+                onChangeText={note => this.setState({ note })}
                 style={Styles.textInput}
                 multiline={true}
                 numberOfLines={4}
@@ -167,9 +174,18 @@ export default class Preview extends Component {
             </View>
 
             <Button
-              onPress={() => this.props.navigation.navigate('Payment')}
+              onPress={() => this.props.navigation.navigate('Payment', {
+                subTotalPrice: subTotalPrice,
+                totalPrice: totalPrice,
+                note: note,
+                shipMethod: shipMethod,
+                shippingFee: shippingFee
+              })}
               title="CONTIUE TO PAYMENT"
-              buttonStyle={Styles.shipButton}
+              buttonStyle={[
+                Styles.shipButton,
+                { marginHorizontal: moderateScale(20) },
+              ]}
             />
           </ScrollView>
         </View>

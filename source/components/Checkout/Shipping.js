@@ -14,12 +14,19 @@ export default class Shipping extends Component {
       freeShiping: true,
       flatRate: false,
       localPickup: false,
+      shippingFee: 0,
       method: 'freeShiping',
     };
   }
 
   render() {
-    const { flatRate, freeShiping, localPickup, method } = this.state;
+    const {
+      flatRate,
+      freeShiping,
+      localPickup,
+      method,
+      shippingFee,
+    } = this.state;
 
     return (
       <View style={Styles.container}>
@@ -40,7 +47,8 @@ export default class Shipping extends Component {
                   freeShiping: true,
                   flatRate: false,
                   localPickup: false,
-                  method: 'freeShiping',
+                  method: 'Free shipping',
+                  shippingFee: 0,
                 })
               }
               uncheckedIcon="circle-o"
@@ -62,7 +70,8 @@ export default class Shipping extends Component {
                   freeShiping: false,
                   flatRate: true,
                   localPickup: false,
-                  method: 'flatRate',
+                  method: 'Flat rate',
+                  shippingFee: 20,
                 })
               }
               checkedIcon="dot-circle-o"
@@ -86,7 +95,8 @@ export default class Shipping extends Component {
                   freeShiping: false,
                   flatRate: false,
                   localPickup: true,
-                  method: 'localPickup',
+                  method: 'Locla pickup',
+                  shippingFee: 10,
                 })
               }
               uncheckedIcon="circle-o"
@@ -106,15 +116,18 @@ export default class Shipping extends Component {
         </View>
 
         <Button
-          onPress={() => this.props.navigation.navigate('Preview')}
+          onPress={() =>
+            this.props.navigation.navigate('Preview', {
+              shipMethod: method,
+              shippingFee: shippingFee,
+            })
+          }
           title="CONTIUE TO SHIPPING"
           buttonStyle={Styles.shipButton}
         />
 
         <TouchableOpacity
-          onPress={() =>
-            this.props.navigation.navigate('Address', { shipMethod: method })
-          }
+          onPress={() => this.props.navigation.navigate('Address')}
           style={Styles.backView}>
           <Text style={{ textDecorationLine: 'underline' }}>
             Go back to address
