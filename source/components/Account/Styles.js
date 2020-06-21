@@ -38,7 +38,7 @@ export default StyleSheet.create({
     paddingHorizontal: moderateScale(20),
     justifyContent: 'space-between',
     alignItems: 'center',
-    opacity: 0.7
+    opacity: 0.7,
   },
   loginText: {
     fontSize: moderateScale(18),
@@ -67,4 +67,27 @@ export default StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: 'grey',
   },
+  leftItmes: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  countLabelText: {
+    marginLeft: moderateScale(20)
+  },
+  historyItem: {
+    marginHorizontal: moderateScale(20),
+    marginTop: moderateScale(20)
+  },
+  touchView: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: moderateScale(10),
+    backgroundColor: '#d0dbd3'
+  },
+  rowStyle: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingTop: moderateScale(10)
+  }
 });

@@ -18,7 +18,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: moderateScale(20),
-    paddingTop: moderateScale(10),
+    // paddingTop: moderateScale(10),
   },
   headerIcon: {
     width: 25,

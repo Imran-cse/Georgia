@@ -72,18 +72,34 @@ export default class Account extends Component {
         <View style={Styles.horizontalLine} />
 
         <ScrollView>
-          <TouchableOpacity style={Styles.itemView}>
-            <Text style={Styles.itemText}>My Profile</Text>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Wishlist')}
+            style={Styles.itemView}>
+            <View style={Styles.leftItmes}>
+              <Icon name="hearto" type="antdesign" />
+              <Text style={Styles.loginText}>My Wishlist</Text>
+            </View>
             <Icon name="ios-arrow-forward" type="ionicon" />
           </TouchableOpacity>
-          <TouchableOpacity style={Styles.itemView}>
+          {/* <TouchableOpacity style={Styles.itemView}>
             <Text style={Styles.itemText}>My Messages</Text>
             <Icon name="ios-arrow-forward" type="ionicon" />
-          </TouchableOpacity>
-          <TouchableOpacity style={Styles.itemView}>
-            <Text style={Styles.itemText}>My Orders</Text>
-            <Icon name="ios-arrow-forward" type="ionicon" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          {!!user && (
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('OrderHistory', {
+                  userId: user.userId,
+                })
+              }
+              style={Styles.itemView}>
+              <View style={Styles.leftItmes}>
+                <Icon name="history" type="material-community" size={28} />
+                <Text style={Styles.loginText}>My Orders</Text>
+              </View>
+              <Icon name="ios-arrow-forward" type="ionicon" />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity style={Styles.itemView}>
             <Text style={Styles.itemText}>Payment Method</Text>
             <Icon name="ios-arrow-forward" type="ionicon" />
