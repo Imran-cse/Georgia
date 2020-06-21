@@ -47,7 +47,7 @@ export default class Login extends Component {
     try {
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
-      this.setState({ userInfo });
+      this.setState({ userInfo, isLoading: true });
       console.log(userInfo);
       if (!!userInfo) {
         const data = {
@@ -84,6 +84,7 @@ export default class Login extends Component {
                   ['token', JSON.stringify(token)],
                 ],
                 err => {
+                  this.setState({ isLoading: false });
                   console.log(err);
                   if (!err) {
                     this.props.navigation.navigate('Account');
@@ -115,6 +116,7 @@ export default class Login extends Component {
                 ['token', JSON.stringify(token)],
               ],
               err => {
+                this.setState({ isLoading: false });
                 console.log(err);
                 if (!err) {
                   this.props.navigation.navigate('Account');
@@ -129,6 +131,7 @@ export default class Login extends Component {
         }
       }
     } catch (error) {
+      this.setState({ isLoading: false });
       console.log(error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
@@ -146,9 +149,8 @@ export default class Login extends Component {
     }
   };
 
-
   fbLogin() {
-    const that = this
+    const that = this;
     LoginManager.logInWithPermissions(['public_profile', 'email']).then(
       function(result) {
         if (result.isCancelled) {
@@ -158,7 +160,8 @@ export default class Login extends Component {
           console.log(
             'Login success with permissions: ' +
               result.grantedPermissions.toString(),
-          )
+          );
+          that.setState({ isLoading: true });
           AccessToken.getCurrentAccessToken()
             .then(res => {
               console.log(res.accessToken);
@@ -167,6 +170,7 @@ export default class Login extends Component {
                 null,
                 async (gerror, gresult) => {
                   if (gerror) {
+                    that.setState({ isLoading: false });
                     console.log(gerror);
                   } else {
                     const profile = gresult;
@@ -187,7 +191,11 @@ export default class Login extends Component {
                       const res1 = await signup(data, 'customers?');
                       const response = await Promise.resolve(res1.json());
                       console.log(JSON.stringify(response));
-                      if (!!response && response.data && response.data.status === 400) {
+                      if (
+                        !!response &&
+                        response.data &&
+                        response.data.status === 400
+                      ) {
                         const res = await login(data.username, dummyPass);
                         const result = await Promise.resolve(res.json());
                         // console.log('after login', result);
@@ -200,7 +208,7 @@ export default class Login extends Component {
                             photo: profile.avatar,
                           };
                           const token = result.token;
-              
+
                           // console.log(JSON.stringify(user), JSON.stringify(token));
                           try {
                             await AsyncStorage.multiSet(
@@ -231,8 +239,11 @@ export default class Login extends Component {
                           user_display_name: gresult.name,
                         };
                         const token = response.token;
-              
-                        console.log(JSON.stringify(user), JSON.stringify(token));
+
+                        console.log(
+                          JSON.stringify(user),
+                          JSON.stringify(token),
+                        );
                         try {
                           await AsyncStorage.multiSet(
                             [
@@ -263,6 +274,7 @@ export default class Login extends Component {
         }
       },
       function(error) {
+        that.setState({ isLoading: false });
         console.log('Login fail with error: ' + error);
       },
     );
