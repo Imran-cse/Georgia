@@ -14,6 +14,7 @@ import {
   getUserAsync,
 } from '../../constants/constant_functions';
 import { getCategory, createOrder } from '../../server/fetch';
+import { clientId } from '../../../config';
 
 export default class Payment extends Component {
   constructor(props) {
@@ -50,8 +51,7 @@ export default class Payment extends Component {
 
   handlePaypal(totalPrice) {
     RNPaypal.paymentRequest({
-      clientId:
-        'ATIVABNxCzWD2YVgFthlYDffnw4Q3OtpjYWeaxvZCOCptezxmWfre3mkjXT3fBIpYutR3TWIlvQ7rpnf',
+      clientId: clientId,
       environment: RNPaypal.ENVIRONMENT.PRODUCTION,
       intent: RNPaypal.INTENT.SALE,
       price: totalPrice,
