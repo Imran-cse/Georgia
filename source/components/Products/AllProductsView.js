@@ -28,15 +28,20 @@ export default class AllProductsView extends Component {
     this.fetchProducts();
   }
 
-  componentDidMount() {
-    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+  async componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', async () => {
+      await this.fetchProducts();
       fetchWishlist(this);
       fetchCartData(this);
+    });
+    this._unsubscribe1 = this.props.navigation.addListener('blur', () => {
+      this.setState({ data: undefined });
     });
   }
 
   componentWillUnmount() {
     this._unsubscribe();
+    this._unsubscribe1();
   }
 
   async fetchProducts() {

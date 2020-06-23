@@ -234,7 +234,7 @@ export default class Payment extends Component {
         <View style={Styles.totalView}>
           <View style={Styles.rowView}>
             <Text>Subtotal</Text>
-            <Text>$ {subTotalPrice}</Text>
+            <Text>$ {subTotalPrice.toFixed(2)}</Text>
           </View>
           <View style={Styles.rowView}>
             <Text>{shipMethod}</Text>
@@ -242,7 +242,7 @@ export default class Payment extends Component {
           </View>
           <View style={Styles.rowView}>
             <Text>Total</Text>
-            <Text style={Styles.totalPrice}>$ {totalPrice}</Text>
+            <Text style={Styles.totalPrice}>$ {totalPrice.toFixed(2)}</Text>
           </View>
         </View>
 

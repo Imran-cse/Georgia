@@ -11,10 +11,11 @@ const Header = props => {
     <View
       style={{
         flexDirection: 'row',
-        padding: moderateScale(20),
         alignItems: 'center',
       }}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
+      <TouchableOpacity
+        style={{ padding: moderateScale(20) }}
+        onPress={() => navigation.goBack()}>
         <Icon name="ios-arrow-back" type="ionicon" color="red" size={25} />
       </TouchableOpacity>
       <Text
