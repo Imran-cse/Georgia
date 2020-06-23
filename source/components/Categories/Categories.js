@@ -38,7 +38,7 @@ export default class Categories extends Component {
     if (!data || data.length < 1) {
       return (
         <View style={{ backgroundColor: 'white', flex: 1 }}>
-          <Header navigation={navigation} />
+          <Header navigation={navigation} headerText='Categories' />
           <SpinView />
         </View>
       );
@@ -46,7 +46,7 @@ export default class Categories extends Component {
 
     return (
       <View style={{ backgroundColor: 'white', flex: 1 }}>
-        <Header navigation={navigation} />
+        <Header headerText='Categories' navigation={navigation} />
 
         <View style={{ flex: 1, paddingTop: 10 }}>
           <FlatList

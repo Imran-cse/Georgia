@@ -101,15 +101,20 @@ export default StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal: moderateScale(20),
-    paddingTop: moderateScale(15),
-    paddingBottom: moderateScale(10),
+    // marginHorizontal: moderateScale(20),
+    // paddingTop: moderateScale(15),
+    // paddingBottom: moderateScale(10),
     alignItems: 'center'
+  },
+  backButton: {
+    paddingHorizontal: moderateScale(20),
+    paddingTop: moderateScale(15),
+    paddingBottom: moderateScale(10)
   },
   headerView: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
     // marginHorizontal: moderateScale(20),
     // paddingTop: moderateScale(15)
   },

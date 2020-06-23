@@ -62,6 +62,7 @@ export async function signup(data, endpoint) {
 }
 
 export async function getCategory(endpoint) {
+  console.log(base_url2+endpoint+authParam);
   try {
     const respones = await fetch(base_url2 + endpoint + authParam, config);
     return respones;

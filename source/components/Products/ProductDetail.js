@@ -16,7 +16,7 @@ import ImageView from './ImageView';
 import ProductHeader from './ProductHeader';
 
 import Styles from './Style';
-import { fetchCartData, updateCart } from '../../constants/constant_functions';
+import { fetchCartData, updateCart, getUserAsync } from '../../constants/constant_functions';
 
 export default class ProductDetails extends Component {
   constructor(props) {

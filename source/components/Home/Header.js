@@ -36,7 +36,7 @@ const Header = props => {
               style={Styles.headerIcon}
             />
           </TouchableOpacity> */}
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
             <Image
               source={require('../../assets/home1/menu_icon.png')}
               style={Styles.headerIcon}
