@@ -56,6 +56,7 @@ export const TabStack = ({ navigation }) => {
 
   return (
     <Tab.Navigator
+      initialRouteName='Home'
       screenOptions={({ route, navigation }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           if (route.name === 'Home') {

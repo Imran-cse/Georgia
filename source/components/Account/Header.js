@@ -9,7 +9,7 @@ const Header = props => {
   return (
     <View>
       <View style={Styles.headerContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => props.navigation.toggleDrawer()}>
           <Icon
             name="menu"
             type="feather"

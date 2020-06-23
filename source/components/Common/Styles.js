@@ -18,5 +18,10 @@ export default StyleSheet.create({
   },
   labelText: {
     fontSize: moderateScale(16),
+  },
+  drawerImage: {
+    width: 180,
+    height: 50,
+    resizeMode: 'contain'
   }
 });

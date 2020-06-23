@@ -52,7 +52,7 @@ export default class Account extends Component {
 
     return (
       <View style={Styles.container}>
-        <Header />
+        <Header navigation={this.props.navigation} />
         {!user && (
           <TouchableOpacity
             onPress={() =>
