@@ -42,11 +42,23 @@ const CustomDrawerContent = props => {
       />
       <DrawerItem
         label="NEW ARRIVAL"
-        onPress={() => props.navigation.navigate('Categories')}
+        onPress={() =>
+          props.navigation.navigate('AllProductsView', {
+            endpoint: `products?per_page=${100}&`,
+            headText: 'All Products',
+            categoryId: 0,
+          })
+        }
       />
       <DrawerItem
         label="C STORE"
-        onPress={() => props.navigation.navigate('Categories')}
+        onPress={() =>
+          props.navigation.navigate('AllProductsView', {
+            endpoint: `products?category=${2145}&per_page=${40}&`,
+            headText: 'C Store',
+            categoryId: '',
+          })
+        }
       />
       <DrawerItem
         label="CUSTOMER SERVICE"
@@ -54,7 +66,13 @@ const CustomDrawerContent = props => {
       />
       <DrawerItem
         label="SALE"
-        onPress={() => props.navigation.navigate('Categories')}
+        onPress={() =>
+          props.navigation.navigate('AllProductsView', {
+            endpoint: `products?category=${2138}&per_page=${40}&`,
+            headText: 'Sale',
+            categoryId: 2138,
+          })
+        }
       />
     </DrawerContentScrollView>
   );
