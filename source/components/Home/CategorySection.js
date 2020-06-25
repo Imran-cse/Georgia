@@ -25,13 +25,13 @@ const CategorySection = props => {
           <Text style={Styles.categorySectionText}>Phone Case</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          // onPress={() =>
-          //   navigation.navigate('AllProductsView', {
-          //     endpoint: `products?category=${item.id}&per_page=${40}&`,
-          //     headText: item.name,
-          //     from: 'Categories',
-          //   })
-          // }
+          onPress={() =>
+            navigation.navigate('AllProductsView', {
+              endpoint: `products?category=1734&per_page=${40}&`,
+              headText: 'Screen Protector',
+              from: 'Categories',
+            })
+          }
           style={Styles.categorySectionItem}>
           <Image
             source={require('../../assets/home1/screen_protector_icon.png')}
