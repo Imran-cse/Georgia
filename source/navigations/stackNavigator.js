@@ -13,6 +13,8 @@ import Shipping from '../components/Checkout/Shipping';
 import Preview from '../components/Checkout/Preview';
 import Payment from '../components/Checkout/Payment';
 import LocationMap from '../components/Checkout/MapView';
+import PrivacyPolicy from '../components/Account/PrivacyPolicy';
+import TermsCondition from '../components/Account/TermsCondition';
 
 const Stack = createStackNavigator();
 const options = { headerShown: false };
@@ -67,6 +69,16 @@ export const AccountStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Account" component={Account} options={options} />
+      <Stack.Screen
+        name="PrivacyPolicy"
+        component={PrivacyPolicy}
+        options={options}
+      />
+      <Stack.Screen
+        name="TermsCondition"
+        component={TermsCondition}
+        options={options}
+      />
     </Stack.Navigator>
   );
 };

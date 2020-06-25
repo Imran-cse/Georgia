@@ -72,22 +72,48 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   countLabelText: {
-    marginLeft: moderateScale(20)
+    marginLeft: moderateScale(20),
   },
   historyItem: {
     marginHorizontal: moderateScale(20),
-    marginTop: moderateScale(20)
+    marginTop: moderateScale(20),
   },
   touchView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: moderateScale(10),
-    backgroundColor: '#d0dbd3'
+    backgroundColor: '#d0dbd3',
   },
   rowStyle: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: moderateScale(10)
-  }
+    paddingTop: moderateScale(10),
+  },
+  emptyHistoryImage: {
+    width: moderateScale(250),
+    height: moderateScale(300),
+    resizeMode: 'contain',
+  },
+  emptext: {
+    fontSize: moderateScale(18),
+    marginHorizontal: moderateScale(30),
+    textAlign: 'center',
+  },
+  privacyText: {
+    fontSize: moderateScale(15),
+    textAlign: 'justify',
+    paddingBottom: moderateScale(5),
+  },
+  privacyHeader: {
+    fontSize: moderateScale(18),
+    fontWeight: 'bold',
+    marginTop: moderateScale(10),
+  },
+  securityText: {
+    fontSize: moderateScale(15),
+    textAlign: 'justify',
+    fontStyle: 'italic',
+    fontWeight: 'bold'
+  },
 });

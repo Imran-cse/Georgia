@@ -100,6 +100,24 @@ export default class Account extends Component {
               <Icon name="ios-arrow-forward" type="ionicon" />
             </TouchableOpacity>
           )}
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('PrivacyPolicy')}
+            style={Styles.itemView}>
+            <View style={Styles.leftItmes}>
+              <Icon name="shield-half-full" type="material-community" />
+              <Text style={Styles.loginText}>Privacy Policy</Text>
+            </View>
+            <Icon name="ios-arrow-forward" type="ionicon" />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('TermsCondition')}
+            style={Styles.itemView}>
+            <View style={Styles.leftItmes}>
+              <Icon name="file-document-outline" type="material-community" />
+              <Text style={Styles.loginText}>Terms & Condition </Text>
+            </View>
+            <Icon name="ios-arrow-forward" type="ionicon" />
+          </TouchableOpacity>
           <TouchableOpacity style={Styles.itemView}>
             <Text style={Styles.itemText}>Payment Method</Text>
             <Icon name="ios-arrow-forward" type="ionicon" />
@@ -110,10 +128,6 @@ export default class Account extends Component {
           </TouchableOpacity>
           <TouchableOpacity style={Styles.itemView}>
             <Text style={Styles.itemText}>Customer Service</Text>
-            <Icon name="ios-arrow-forward" type="ionicon" />
-          </TouchableOpacity>
-          <TouchableOpacity style={Styles.itemView}>
-            <Text style={Styles.itemText}>Terms & Conditions</Text>
             <Icon name="ios-arrow-forward" type="ionicon" />
           </TouchableOpacity>
         </ScrollView>
