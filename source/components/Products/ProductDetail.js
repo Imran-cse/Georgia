@@ -131,8 +131,9 @@ export default class ProductDetails extends Component {
               <Button
                 onPress={() => this.handleCart(product)}
                 title="ADD TO CART"
-                buttonStyle={[Styles.cartButton, { paddingHorizontal: 10 }]}
-                titleStyle={{ color: 'black' }}
+                // buttonStyle={[Styles.cartButton, { paddingHorizontal: 10 }]}
+                buttonStyle={[Styles.buyBotton, {paddingHorizontal: 10}]}
+                // titleStyle={{ color: 'black' }}
               />
 
               <View style={Styles.pickerContainer}>
