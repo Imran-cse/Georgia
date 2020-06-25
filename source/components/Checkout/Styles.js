@@ -66,7 +66,7 @@ export default StyleSheet.create({
   },
   shpiLevelView: {
     margin: moderateScale(10),
-    marginLeft: moderateScale(20)
+    marginLeft: moderateScale(20),
   },
   shipText: {
     fontSize: moderateScale(15),
@@ -81,56 +81,68 @@ export default StyleSheet.create({
   shipButton: {
     margin: moderateScale(10),
     paddingVertical: moderateScale(10),
-    backgroundColor: 'red'
+    backgroundColor: 'red',
   },
   backView: {
     alignItems: 'center',
     marginVertical: 5,
-    opacity: 0.5
+    opacity: 0.5,
   },
   orderDetailLabel: {
     marginLeft: moderateScale(20),
     fontSize: moderateScale(15),
-    opacity: 0.6
+    opacity: 0.6,
   },
   totalView: {
-    margin: moderateScale(20)
+    margin: moderateScale(20),
   },
   rowView: {
     flexDirection: 'row',
     paddingTop: moderateScale(10),
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   totalPrice: {
     fontSize: moderateScale(16),
     textDecorationLine: 'underline',
     fontWeight: 'bold',
-    opacity: 0.7
+    opacity: 0.7,
   },
   noteView: {
-    marginHorizontal: moderateScale(20)
+    marginHorizontal: moderateScale(20),
   },
   textInput: {
     borderWidth: 1,
     textAlignVertical: 'top',
     borderColor: '#dfe6f2',
-    marginTop: 5
+    marginTop: 5,
   },
   noteText: {
     fontSize: moderateScale(16),
     fontWeight: 'bold',
-    opacity: 0.5
+    opacity: 0.5,
   },
   addressRow: {
     flexDirection: 'row',
     marginHorizontal: moderateScale(20),
     paddingBottom: 2,
-    opacity: 0.7
+    opacity: 0.7,
   },
   firstColumn: {
     flex: 4,
   },
   secondColumn: {
-    flex: 6
-  }
+    flex: 6,
+  },
+  addressSeparator: {
+    height: 1,
+    opacity: 0.5,
+    backgroundColor: 'grey',
+    marginHorizontal: moderateScale(20),
+    marginVertical: moderateScale(10),
+  },
+  rowStyle: {
+    flexDirection: 'row',
+    marginHorizontal: moderateScale(20),
+    opacity: 0.7
+  },
 });

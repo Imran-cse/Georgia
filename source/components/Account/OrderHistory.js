@@ -1,31 +1,34 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Image } from 'react-native';
 
-import { Icon } from 'react-native-elements';
+import { Icon, Button } from 'react-native-elements';
 import moment from 'moment';
 
 import Header from '../Common/Header';
 import SpinView from '../Common/SpinView';
 import { getCategory } from '../../server/fetch';
 import Styles from './Styles';
+import Styles1 from '../Wishlist/Styles';
 
 export default class OrderHistory extends Component {
   constructor(props) {
     super(props);
     this.state = {
       orders: [],
+      isLoading: false,
     };
 
     this.fetchOrders();
   }
 
   async fetchOrders() {
+    this.setState({ isLoading: true });
     const { route } = this.props;
     const { userId } = route.params;
     const res = await getCategory(`orders?customer=${userId}&`);
     const result = await Promise.resolve(res.json());
     // console.log(JSON.stringify(result));
-    this.setState({ orders: result });
+    this.setState({ orders: result, isLoading: false });
   }
 
   async componentDidMount() {
@@ -33,13 +36,29 @@ export default class OrderHistory extends Component {
   }
 
   render() {
-    const { orders } = this.state;
+    const { orders, isLoading } = this.state;
 
-    if (orders.length <= 0) {
+    if (isLoading) {
       return (
         <View style={{ flex: 1 }}>
           <Header headerText="My Orders" navigation={this.props.navigation} />
           <SpinView />
+        </View>
+      );
+    }
+
+    if (orders.length <= 0) {
+      return (
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+          <Header headerText="My Orders" navigation={this.props.navigation} />
+          <View style={Styles1.emptyImageContainer}>
+            <Image
+              source={require('../../assets/emptyOrder.png')}
+              style={Styles.emptyHistoryImage}
+            />
+            <Text style={Styles1.emptyText}>No Purchase History</Text>
+            <Text style={Styles.emptext}>Check back after your next shopping trip</Text>
+          </View>
         </View>
       );
     }
