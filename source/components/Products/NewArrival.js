@@ -14,7 +14,7 @@ import {
   fetchWishlist,
 } from '../../constants/constant_functions';
 
-export default class AllProductsView extends Component {
+export default class NewArrival extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -88,9 +88,9 @@ export default class AllProductsView extends Component {
     }
     // console.log(categoryId)
     this.setState({ isLoading: true });
-    const { categoryId } = this.props.route.params;
+    // const { categoryId } = this.props.route.params;
     const res = await getCategory(
-      `products?category=${categoryId}&page=${page + 1}&per_page=40&`,
+      `products?page=${page + 1}&per_page=40&`,
     );
     let newData = await Promise.resolve(res.json());
     // let count = res.headers.get('X-WP-Total');

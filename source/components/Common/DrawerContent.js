@@ -32,10 +32,10 @@ const CustomDrawerContent = props => {
         label="CATEGORIES"
         onPress={() => props.navigation.navigate('Categories')}
       />
-      <DrawerItem
+      {/* <DrawerItem
         label="CARRIERS"
         onPress={() => props.navigation.navigate('Categories')}
-      />
+      /> */}
       <DrawerItem
         label="SHOP BY DEVICE"
         onPress={() => props.navigation.navigate('Categories')}
@@ -43,8 +43,8 @@ const CustomDrawerContent = props => {
       <DrawerItem
         label="NEW ARRIVAL"
         onPress={() =>
-          props.navigation.navigate('AllProductsView', {
-            endpoint: `products?per_page=${100}&`,
+          props.navigation.navigate('NewArrival', {
+            endpoint: `products?per_page=${40}&`,
             headText: 'All Products',
             categoryId: 0,
           })

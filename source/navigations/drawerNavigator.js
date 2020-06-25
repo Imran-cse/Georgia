@@ -7,7 +7,7 @@ import CustomDrawerContent from '../components/Common/DrawerContent';
 import AllBrands from '../components/Brands/AllBrands';
 import ProductDetails from '../components/Products/ProductDetail';
 import AllProductsView from '../components/Products/AllProductsView';
-import Home from '../components/Home/Home';
+import NewArrival from '../components/Products/NewArrival';
 
 const Drawer = createDrawerNavigator();
 const options = { headerShown: false };
@@ -26,6 +26,11 @@ export const DrawerStack = () => {
       <Drawer.Screen
         name="ProductDetails"
         component={ProductDetails}
+        options={options}
+      />
+      <Drawer.Screen
+        name="NewArrival"
+        component={NewArrival}
         options={options}
       />
     </Drawer.Navigator>
