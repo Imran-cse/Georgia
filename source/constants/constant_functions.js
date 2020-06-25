@@ -37,10 +37,20 @@ export const fetchCartData = async context => {
 };
 
 export const fetchAddress = async context => {
-  await AsyncStorage.getItem('address', (err, res) => {
-    const address = res ? JSON.parse(res) : {};
-    context.setState({ address });
+  await AsyncStorage.getItem('savedAddresses', (err, res) => {
+    const savedAddresses = res ? JSON.parse(res) : [];
+    context.setState({ savedAddresses });
   });
+};
+
+export const updateAddress = async (savedAddresses, context) => {
+  await AsyncStorage.setItem(
+    'savedAddresses',
+    JSON.stringify(savedAddresses),
+    (err, res) => {
+      context.setState({ savedAddresses });
+    },
+  );
 };
 
 export const fetchCartDataCount = async () => {

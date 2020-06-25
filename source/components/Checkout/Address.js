@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
-import { View, Image, Text, ScrollView, TouchableOpacity, ToastAndroid } from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  ToastAndroid,
+} from 'react-native';
 
 import { Form, Item, Input, Label, Picker } from 'native-base';
 import { Button } from 'react-native-elements';
 import AsyncStorage from '@react-native-community/async-storage';
 
+import SavedAddress from './SavedAddress';
 import ChekcoutSteps from './CheckoutSteps';
 import Header from '../Common/Header';
 import Styles from './Styles';
 import { coutriesJson } from '../../constants/countries';
-import { fetchAddress } from '../../constants/constant_functions';
+import {
+  fetchAddress,
+  updateAddress,
+} from '../../constants/constant_functions';
 
 export default class Address extends Component {
   constructor(props) {
@@ -25,6 +36,8 @@ export default class Address extends Component {
       street: undefined,
       zipCode: undefined,
       address: {},
+      savedAddresses: [],
+      showSavedAddress: false,
     };
 
     this.fetchAddress();
@@ -33,19 +46,8 @@ export default class Address extends Component {
   async fetchAddress() {
     await fetchAddress(this);
 
-    // const {
-    //   firstName,
-    //   lastName,
-    //   phoneNumber,
-    //   email,
-    //   country,
-    //   state,
-    //   city,
-    //   street,
-    //   zipCode,
-    // } = this.state.address;
-    console.log(this.state.address);
-    this.setState({ ...this.state.address });
+    // console.log(this.state.address);
+    // this.setState({ ...this.state.address });
   }
 
   componentDidMount() {
@@ -97,6 +99,10 @@ export default class Address extends Component {
     } else return true;
   }
 
+  updateState(obj) {
+    this.setState(obj);
+  }
+
   async handleAddress() {
     const {
       firstName,
@@ -127,14 +133,44 @@ export default class Address extends Component {
     if (vald === false) {
       return;
     }
+    this.props.navigation.navigate('Shipping');
+    // try {
+    //   await AsyncStorage.setItem('address', JSON.stringify(address), err =>
+    //     console.log(err),
+    //   );
+    //   this.props.navigation.navigate('Shipping');
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  }
 
-    try {
-      await AsyncStorage.setItem('address', JSON.stringify(address), err =>
-        console.log(err),
-      );
-      this.props.navigation.navigate('Shipping');
-    } catch (error) {
-      console.log(error);
+  selectAddress(index) {
+    console.log(index);
+    const { savedAddresses } = this.state;
+    this.setState({ ...savedAddresses[index], showSavedAddress: false });
+  }
+
+  removeAddress(index) {
+    const { savedAddresses } = this.state;
+    savedAddresses.splice(index, 1);
+    updateAddress(savedAddresses, this);
+  }
+
+  checkAddressExists(address) {
+    const { savedAddresses } = this.state;
+    if (savedAddresses.length > 0) {
+      let tempAddress = JSON.stringify(address);
+      for (let index = 0; index < savedAddresses.length; index++) {
+        const element = JSON.stringify(savedAddresses[index]);
+        if (element == tempAddress) {
+          // alert('The address is already saved!');
+          console.log('came to check');
+          return true;
+        }
+      }
+      return false;
+    } else {
+      return false;
     }
   }
 
@@ -149,6 +185,7 @@ export default class Address extends Component {
       city,
       street,
       zipCode,
+      savedAddresses,
     } = this.state;
 
     let address = {
@@ -169,13 +206,21 @@ export default class Address extends Component {
       return;
     }
 
-    try {
-      await AsyncStorage.setItem('address', JSON.stringify(address), err =>
-        console.log(err),
-      );
-      ToastAndroid.show('Address saved!', ToastAndroid.SHORT);
-    } catch (error) {
-      console.log(error);
+    let exists = await this.checkAddressExists(address);
+    console.log(exists);
+    if (await this.checkAddressExists(address)) {
+      alert('The address is already saved!');
+      return;
+    } else {
+      savedAddresses.push(address);
+      console.log('address', address);
+      this.setState({ savedAddresses });
+      try {
+        await updateAddress(savedAddresses, this);
+        ToastAndroid.show('Address saved!', ToastAndroid.SHORT);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
@@ -191,6 +236,9 @@ export default class Address extends Component {
       street,
       zipCode,
       selectedIndex,
+      showSavedAddress,
+      savedAddresses,
+      address,
     } = this.state;
 
     console.log('in render', this.state);
@@ -223,9 +271,24 @@ export default class Address extends Component {
       }
     }
 
+    if (showSavedAddress) {
+      return (
+        <SavedAddress
+          savedAddresses={savedAddresses}
+          updateState={this.updateState.bind(this)}
+          selectAddress={this.selectAddress.bind(this)}
+          removeAddress={this.removeAddress.bind(this)}
+        />
+      );
+    }
+
     return (
       <View style={Styles.container}>
-        <Header headerText="Checkout" navigation={this.props.navigation} />
+        <Header
+          headerText="Checkout"
+          address={address}
+          navigation={this.props.navigation}
+        />
 
         <ChekcoutSteps step={1} />
 
@@ -276,7 +339,9 @@ export default class Address extends Component {
             </Form>
 
             <View>
-              <TouchableOpacity style={Styles.searchView}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('LocationMap')}
+                style={Styles.searchView}>
                 <View style={{ paddingRight: 10 }}>
                   <Image
                     source={{
@@ -288,7 +353,11 @@ export default class Address extends Component {
                 </View>
                 <Text style={Styles.searchText}>Searching Address</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={Styles.searchView}>
+              <TouchableOpacity
+                onPress={() =>
+                  this.setState({ showSavedAddress: !showSavedAddress })
+                }
+                style={Styles.searchView}>
                 <View style={{ paddingRight: 10 }}>
                   <Image
                     source={{
@@ -316,7 +385,7 @@ export default class Address extends Component {
               </View>
             </View>
 
-            <View style={Styles.pickerContainer}>
+            {/* <View style={Styles.pickerContainer}>
               <Text>State/Province</Text>
               <View style={Styles.pickerView}>
                 <Picker
@@ -326,9 +395,19 @@ export default class Address extends Component {
                   {stateList}
                 </Picker>
               </View>
-            </View>
+            </View> */}
 
             <Form>
+              <Item floatingLabel style={Styles.formItem}>
+                <Label>State/Province</Label>
+                <Input
+                  value={state}
+                  onChangeText={state => this.setState({ state })}
+                  getRef={input => (this.stateRef = input)}
+                  returnKeyType="next"
+                  onSubmitEditing={() => this.cityRef._root.focus()}
+                />
+              </Item>
               <Item floatingLabel style={Styles.formItem}>
                 <Label>City</Label>
                 <Input
@@ -355,7 +434,7 @@ export default class Address extends Component {
                   value={zipCode}
                   onChangeText={zipCode => this.setState({ zipCode })}
                   getRef={input => (this.zipRef = input)}
-                  onSubmitEditing={() => this.handleAddress()}
+                  // onSubmitEditing={() => this.handleAddress()}
                 />
               </Item>
             </Form>
