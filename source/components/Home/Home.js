@@ -81,7 +81,7 @@ export default class Home extends Component {
   }
 
   async fetchBanner() {
-    await fetch(base_url, config)
+    await fetch(base_url+'?search=banner&mime_type=image/png', config)
       .then(res => res.json())
       .then(data => {
         let tempImages = this.state.images;
@@ -172,7 +172,7 @@ export default class Home extends Component {
             </View>
           </TouchableOpacity>
 
-          <SliderBox images={this.state.images} />
+          <SliderBox images={this.state.images} circleLoop={true} />
 
           <CategorySection navigation={this.props.navigation} />
           <View style={Styles.divider} />
