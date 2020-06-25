@@ -12,13 +12,14 @@ import Address from '../components/Checkout/Address';
 import Shipping from '../components/Checkout/Shipping';
 import Preview from '../components/Checkout/Preview';
 import Payment from '../components/Checkout/Payment';
+import LocationMap from '../components/Checkout/MapView';
 
 const Stack = createStackNavigator();
 const options = { headerShown: false };
 
 export const HomeStack = () => {
   return (
-    <Stack.Navigator initialRouteName='Home'>
+    <Stack.Navigator initialRouteName="Home">
       <Stack.Screen name="Home" component={Home} options={options} />
       {/* <Stack.Screen
         name="ProductDetails"
@@ -36,7 +37,7 @@ export const HomeStack = () => {
 
 export const CategoryStack = () => {
   return (
-    <Stack.Navigator initialRouteName='Categories'>
+    <Stack.Navigator initialRouteName="Categories">
       <Stack.Screen
         name="Categories"
         component={Categories}
@@ -74,18 +75,23 @@ export const AuthStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Login" component={Login} options={options} />
-      <Stack.Screen name='Signup' component={Signup} options={options} />
+      <Stack.Screen name="Signup" component={Signup} options={options} />
     </Stack.Navigator>
-  )
-}
+  );
+};
 
 export const CheckoutStack = () => {
   return (
     <Stack.Navigator>
-      <Stack.Screen name='Address' component={Address} options={options} />
-      <Stack.Screen name='Shipping' component={Shipping} options={options} />
-      <Stack.Screen name='Preview' component={Preview} options={options} />
-      <Stack.Screen name='Payment' component={Payment} options={options} />
+      <Stack.Screen name="Address" component={Address} options={options} />
+      <Stack.Screen name="Shipping" component={Shipping} options={options} />
+      <Stack.Screen name="Preview" component={Preview} options={options} />
+      <Stack.Screen name="Payment" component={Payment} options={options} />
+      <Stack.Screen
+        name="LocationMap"
+        component={LocationMap}
+        options={options}
+      />
     </Stack.Navigator>
-  )
-}
+  );
+};
