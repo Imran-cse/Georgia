@@ -1,5 +1,8 @@
 #import "AppDelegate.h"
 
+#import <RNGoogleSignin/RNGoogleSignin.h>
+#import <GoogleMaps/GoogleMaps.h>
+
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
@@ -27,6 +30,7 @@ static void InitializeFlipper(UIApplication *application) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  [GMSServices provideAPIKey:@"AIzaSyCn-WHq5EpTUsZU3cs28WXikrz0HxcQi48"];
 #if DEBUG
   InitializeFlipper(application);
 #endif

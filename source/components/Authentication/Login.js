@@ -39,6 +39,7 @@ export default class Login extends Component {
   async _configureGoogleSignIn() {
     await GoogleSignin.configure({
       webClientId: config.webClientId,
+      iosClientId: config.iosClientId,
       offlineAccess: true,
     });
   }

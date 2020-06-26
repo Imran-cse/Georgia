@@ -20,6 +20,7 @@ import { coutriesJson } from '../../constants/countries';
 import {
   fetchAddress,
   updateAddress,
+  moderateScale,
 } from '../../constants/constant_functions';
 
 export default class Address extends Component {
@@ -443,13 +444,14 @@ export default class Address extends Component {
               <Button
                 onPress={() => this.handleSave()}
                 title="SAVE ADDRESS"
-                titleStyle={{ color: 'black' }}
+                titleStyle={{ color: 'black', fontSize: moderateScale(15) }}
                 buttonStyle={Styles.saveButton}
               />
 
               <Button
                 onPress={() => this.handleAddress()}
                 title="CONTINUE TO SHIPPING"
+                titleStyle={{fontSize: moderateScale(15)}}
                 buttonStyle={Styles.continueButton}
               />
             </View>
