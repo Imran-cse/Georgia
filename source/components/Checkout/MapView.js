@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   FlatList,
+  PermissionsAndroid,
 } from 'react-native';
 
 import MapView, { Marker } from 'react-native-maps';
@@ -24,8 +25,26 @@ export default class LocationMap extends Component {
       },
       results: [],
     };
+  }
 
-    this.getCurrentPlace();
+  async componentDidMount() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        {
+          title: 'Georgia Location Permission',
+          message:
+            'Please give access to device location to search address',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        this.getCurrentPlace()
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
   }
 
   onOpenAutocompletePress = () => {
@@ -116,6 +135,7 @@ export default class LocationMap extends Component {
             console.log(e.nativeEvent.placeId);
             this.onSelectSuggestion(e.nativeEvent.placeId);
           }}
+          // onPoiClick={() => this.getCurrentPlace()}
           // onUserLocationChange={e => this.setState({x: e.nativeEvent.coordinate})}
           // onPress={e => {
           //   this.setState({ x: e.nativeEvent.coordinate });
@@ -161,7 +181,7 @@ export default class LocationMap extends Component {
                   height: 1,
                   backgroundColor: 'grey',
                   marginVertical: moderateScale(10),
-                  opacity: 0.5
+                  opacity: 0.5,
                 }}
               />
             )}
@@ -174,8 +194,10 @@ export default class LocationMap extends Component {
                     this.getPlaceDetail(item.placeID);
                   }
                 }}>
-                <Text style={{fontSize: 17}}>{item.name}</Text>
-                <Text style={{fontSize: 14, color: 'grey'}}>{item.address}</Text>
+                <Text style={{ fontSize: 17 }}>{item.name}</Text>
+                <Text style={{ fontSize: 14, color: 'grey' }}>
+                  {item.address}
+                </Text>
               </TouchableOpacity>
             )}
           />

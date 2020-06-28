@@ -144,15 +144,15 @@ export default class Address extends Component {
     if (vald === false) {
       return;
     }
-    this.props.navigation.navigate('Shipping');
-    // try {
-    //   await AsyncStorage.setItem('address', JSON.stringify(address), err =>
-    //     console.log(err),
-    //   );
-    //   this.props.navigation.navigate('Shipping');
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    // this.props.navigation.navigate('Shipping');
+    try {
+      await AsyncStorage.setItem('address', JSON.stringify(address), err =>
+        console.log(err),
+      );
+      this.props.navigation.navigate('Shipping');
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   selectAddress(index) {
