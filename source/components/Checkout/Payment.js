@@ -150,6 +150,7 @@ export default class Payment extends Component {
       subTotalPrice,
       totalPrice,
       note,
+      tax,
       shipMethod,
       shippingFee,
     } = route.params;
@@ -235,6 +236,10 @@ export default class Payment extends Component {
           <View style={Styles.rowView}>
             <Text>Subtotal</Text>
             <Text>$ {subTotalPrice.toFixed(2)}</Text>
+          </View>
+          <View style={Styles.rowView}>
+            <Text>Tax</Text>
+            <Text>$ {tax.toFixed(2)}</Text>
           </View>
           <View style={Styles.rowView}>
             <Text>{shipMethod}</Text>

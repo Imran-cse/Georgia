@@ -43,6 +43,13 @@ export const fetchAddress = async context => {
   });
 };
 
+export const fetchShipAddress = async context => {
+  await AsyncStorage.getItem('address', (err, res) => {
+    const address = res ? JSON.parse(res) : [];
+    context.setState({ address });
+  });
+};
+
 export const updateAddress = async (savedAddresses, context) => {
   await AsyncStorage.setItem(
     'savedAddresses',

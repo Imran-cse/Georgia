@@ -13,7 +13,9 @@ import {
   fetchCartData,
   updateCart,
   fetchAddress,
+  getUserAsync,
   moderateScale,
+  fetchShipAddress
 } from '../../constants/constant_functions';
 
 export default class Preview extends Component {
@@ -30,13 +32,17 @@ export default class Preview extends Component {
 
   async fetchCartData() {
     await fetchCartData(this);
-    await fetchAddress(this);
+    await fetchShipAddress(this);
+    const user = await getUserAsync();
+    if (user) {
+      this.setState({ user: JSON.parse(user) }, () => console.log('hello'));
+    }
   }
 
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       fetchCartData(this);
-      fetchAddress(this);
+      fetchShipAddress(this);
     });
   }
 
@@ -59,9 +65,9 @@ export default class Preview extends Component {
   }
 
   render() {
-    const { cart, address, note } = this.state;
+    const { cart, address, note, user } = this.state;
     const { route } = this.props;
-    const { shipMethod, shippingFee } = route.params;
+    let { shipMethod, shippingFee } = route.params;
     // console.log('cart in preview', cart);
 
     let productCount = 0;
@@ -75,13 +81,25 @@ export default class Preview extends Component {
       }
     }
 
+    let tax = 0;
+    if (!!user && user.role.includes('customer')) {
+      tax = subTotalPrice * 0.08;
+    }
+
+    let totalPrice = subTotalPrice + tax
+    if (subTotalPrice < 150) {
+      totalPrice = totalPrice + shippingFee
+    } else {
+      shippingFee = 0.00
+    }
+
     let pickerList = [];
     for (let index = 1; index < 50; index++) {
       pickerList.push(
         <Picker.Item label={`${index}`} key={index} value={index} />,
       );
     }
-    let totalPrice = subTotalPrice + shippingFee;
+    // let totalPrice = subTotalPrice + shippingFee;
 
     console.log('arrCart', arrCart);
 
@@ -153,6 +171,10 @@ export default class Preview extends Component {
                 <Text>$ {subTotalPrice.toFixed(2)}</Text>
               </View>
               <View style={Styles.rowView}>
+                <Text>Tax</Text>
+                <Text>$ {tax.toFixed(2)}</Text>
+              </View>
+              <View style={Styles.rowView}>
                 <Text>{shipMethod}</Text>
                 <Text>$ {shippingFee}</Text>
               </View>
@@ -178,6 +200,7 @@ export default class Preview extends Component {
                 subTotalPrice: subTotalPrice,
                 totalPrice: totalPrice,
                 note: note,
+                tax: tax,
                 shipMethod: shipMethod,
                 shippingFee: shippingFee
               })}

@@ -66,7 +66,7 @@ export default class Login extends Component {
         if (!!response && response.data && response.data.status === 400) {
           const res = await login(data.username, dummyPass);
           const result = await Promise.resolve(res.json());
-          // console.log('after login', result);
+          console.log('after login', result);
           console.log('user', userInfo.user.name);
           if (result) {
             let user = {
@@ -74,6 +74,7 @@ export default class Login extends Component {
               name: userInfo.user.name,
               email: result.user_email,
               photo: data.avatar_url,
+              role: result.user_roles
             };
             const token = result.token;
 
@@ -106,6 +107,7 @@ export default class Login extends Component {
             email: data.email,
             photo: data.avatar_url,
             user_display_name: userInfo.user.name,
+            role: ['customer']
           };
           const token = response.token;
 
@@ -207,6 +209,7 @@ export default class Login extends Component {
                             name: profile.name,
                             email: result.user_email,
                             photo: profile.avatar,
+                            role: result.user_roles
                           };
                           const token = result.token;
 
@@ -238,6 +241,7 @@ export default class Login extends Component {
                           email: gresult.email,
                           photo: profile.avatar,
                           user_display_name: gresult.name,
+                          role: ['customer']
                         };
                         const token = response.token;
 
@@ -298,6 +302,7 @@ export default class Login extends Component {
         userId: result.user_id,
         name: result.user_display_name,
         email: result.user_email,
+        role: result.user_roles
       };
       const token = result.token;
 

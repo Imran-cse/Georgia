@@ -22,17 +22,19 @@ const QuantityModal = props => {
       isVisible={isModalVisible}
       onBackdropPress={() => props.updateState({ isModalVisible: false })}>
       <View style={Styles.modalContainer}>
-        <View style={{paddingBottom: 5}}>
+        <View style={{ paddingBottom: 5 }}>
           <Text style={Styles.labelText}>Please select the no of items:</Text>
         </View>
         <View style={Styles.pickerView}>
           <Picker
             selectedValue={selectedQuantity}
-            mode='dropdown'
+            mode="dropdown"
+            placeholder="Select quantity"
             onValueChange={value => {
               // setQuantity(value);
               props.handleCart(value);
             }}>
+            <Picker.item label="Select quatity" value={undefined} />
             {pickerList}
           </Picker>
         </View>

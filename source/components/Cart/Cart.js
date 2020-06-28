@@ -36,7 +36,7 @@ export default class Cart extends Component {
   }
 
   async fetchCartData() {
-    LayoutAnimation.easeInEaseOut()
+    LayoutAnimation.easeInEaseOut();
     await fetchCartData(this);
     const user = await getUserAsync();
     if (user) {
@@ -98,15 +98,21 @@ export default class Cart extends Component {
     console.log('cart', cart);
 
     let productCount = 0;
-    let totalPrice = 0;
+    let subTotal = 0;
     let arrCart = [];
     for (const key in cart) {
       if (cart.hasOwnProperty(key)) {
         arrCart.push({ ...cart[key], id: key });
-        totalPrice += Number(cart[key].quantity) * Number(cart[key].price);
+        subTotal += Number(cart[key].quantity) * Number(cart[key].price);
         productCount += Number(cart[key].quantity);
       }
     }
+
+    let tax = 0;
+    if (!!user && user.role.includes('customer')) {
+      tax = subTotal * 0.08;
+    }
+    let totalPrice = subTotal + tax;
 
     let pickerList = [];
     for (let index = 1; index < 50; index++) {
@@ -193,11 +199,11 @@ export default class Cart extends Component {
             </View>
             <View style={Styles.rowView}>
               <Text style={Styles.bigText}>Sub Total</Text>
-              <Text style={Styles.bigText}>$ {totalPrice.toFixed(2)}</Text>
+              <Text style={Styles.bigText}>$ {subTotal.toFixed(2)}</Text>
             </View>
             <View style={Styles.rowView}>
               <Text style={Styles.smallText}>Tax</Text>
-              <Text style={Styles.smallText}>$ 0.32</Text>
+              <Text style={Styles.smallText}>$ {tax.toFixed(2)}</Text>
             </View>
             <View style={Styles.rowView}>
               <Text style={Styles.bigText}>Total</Text>
