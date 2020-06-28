@@ -32,8 +32,11 @@ export default class Account extends Component {
   async checkLogin() {
     console.log('came to account');
     const user = await getUserAsync();
+    const token = await AsyncStorage.getItem('token');
     if (user !== null) {
-      this.setState({ user: JSON.parse(user) }, () => console.log('hello'));
+      this.setState({ user: JSON.parse(user), token: JSON.parse(token) }, () =>
+        console.log('hello'),
+      );
     }
   }
 
@@ -100,6 +103,53 @@ export default class Account extends Component {
               <Icon name="ios-arrow-forward" type="ionicon" />
             </TouchableOpacity>
           )}
+          {!!user && (
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('MyWalletBalance', {
+                  userId: user.userId,
+                  token: this.state.token,
+                })
+              }
+              style={Styles.itemView}>
+              <View style={Styles.leftItmes}>
+                <Icon name="wallet" type="antdesign" size={28} />
+                <Text style={Styles.loginText}>My Wallet Balance</Text>
+              </View>
+              <Icon name="ios-arrow-forward" type="ionicon" />
+            </TouchableOpacity>
+          )}
+          {!!user && (
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('ShippingAddress', {
+                  userId: user.userId,
+                  token: this.state.token,
+                })
+              }
+              style={Styles.itemView}>
+              <View style={Styles.leftItmes}>
+                <Icon name="local-shipping" type="material-icon" size={28} />
+                <Text style={Styles.loginText}>Shipping Addresses</Text>
+              </View>
+              <Icon name="ios-arrow-forward" type="ionicon" />
+            </TouchableOpacity>
+          )}
+          {!!user && (
+            <TouchableOpacity
+              onPress={() =>
+                this.props.navigation.navigate('BrowsingHistory', {
+                  userId: user.userId,
+                })
+              }
+              style={Styles.itemView}>
+              <View style={Styles.leftItmes}>
+                <Icon name="history" type="material-community" size={28} />
+                <Text style={Styles.loginText}>Browsing History</Text>
+              </View>
+              <Icon name="ios-arrow-forward" type="ionicon" />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={() => this.props.navigation.navigate('PrivacyPolicy')}
             style={Styles.itemView}>
@@ -116,18 +166,6 @@ export default class Account extends Component {
               <Icon name="file-document-outline" type="material-community" />
               <Text style={Styles.loginText}>Terms & Condition </Text>
             </View>
-            <Icon name="ios-arrow-forward" type="ionicon" />
-          </TouchableOpacity>
-          <TouchableOpacity style={Styles.itemView}>
-            <Text style={Styles.itemText}>Payment Method</Text>
-            <Icon name="ios-arrow-forward" type="ionicon" />
-          </TouchableOpacity>
-          <TouchableOpacity style={Styles.itemView}>
-            <Text style={Styles.itemText}>Shipping Address</Text>
-            <Icon name="ios-arrow-forward" type="ionicon" />
-          </TouchableOpacity>
-          <TouchableOpacity style={Styles.itemView}>
-            <Text style={Styles.itemText}>Customer Service</Text>
             <Icon name="ios-arrow-forward" type="ionicon" />
           </TouchableOpacity>
         </ScrollView>

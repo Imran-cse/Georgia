@@ -66,6 +66,24 @@ export const updateCart = async (cart, context) => {
   });
 };
 
+export const fetchBrowsingHistory = async context => {
+  await AsyncStorage.getItem('browsingHistory', (err, res) => {
+    const browsingHistory = res ? JSON.parse(res) : {};
+    context.setState({ browsingHistory });
+  });
+};
+
+export const updateBrowsingHistory = async (browsingHistory, context) => {
+  console.log('browsingHistory', browsingHistory);
+  await AsyncStorage.setItem(
+    'browsingHistory',
+    JSON.stringify(browsingHistory),
+    (err, res) => {
+      context.setState({ browsingHistory });
+    },
+  );
+};
+
 export const upldateWishlist = async (wishList, context) => {
   await AsyncStorage.setItem(
     'wishList',

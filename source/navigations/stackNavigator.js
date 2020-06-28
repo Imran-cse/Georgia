@@ -15,6 +15,9 @@ import Payment from '../components/Checkout/Payment';
 import LocationMap from '../components/Checkout/MapView';
 import PrivacyPolicy from '../components/Account/PrivacyPolicy';
 import TermsCondition from '../components/Account/TermsCondition';
+import MyWalletBalance from '../components/Account/MyWalletBalance';
+import ShippingAddress from '../components/Account/ShippingAddress';
+import BrowsingHistory from '../components/Account/BrowsingHistory';
 
 const Stack = createStackNavigator();
 const options = { headerShown: false };
@@ -77,6 +80,21 @@ export const AccountStack = () => {
       <Stack.Screen
         name="TermsCondition"
         component={TermsCondition}
+        options={options}
+      />
+      <Stack.Screen
+        name="MyWalletBalance"
+        component={MyWalletBalance}
+        options={options}
+      />
+      <Stack.Screen
+        name="ShippingAddress"
+        component={ShippingAddress}
+        options={options}
+      />
+      <Stack.Screen
+        name="BrowsingHistory"
+        component={BrowsingHistory}
         options={options}
       />
     </Stack.Navigator>

@@ -2,6 +2,8 @@ const axios = require('axios');
 
 export const base_url = 'https://www.georgiaphonecase.com/wp-json/wp/v2/media';
 
+export const wp_url = 'https://www.georgiaphonecase.com/wp-json/wp/v2/';
+
 // let base64 = require(base64);
 
 let userName = 'ck_c52dde1216f4bb02c54ebbcbfe2a909d8af35f1b';
@@ -62,9 +64,29 @@ export async function signup(data, endpoint) {
 }
 
 export async function getCategory(endpoint) {
-  console.log(base_url2+endpoint+authParam);
+  console.log(base_url2 + endpoint + authParam);
   try {
     const respones = await fetch(base_url2 + endpoint + authParam, config);
+    return respones;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function getBalance(endpoint, token) {
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json');
+  headers.append('Authorization', 'Bearer ' + String(token));
+  let config = {
+    headers: headers,
+    mode: 'cors',
+    method: 'GET',
+    redirect: 'follow'
+  };
+  console.log(config);
+  console.log(wp_url + endpoint);
+  try {
+    const respones = await fetch(wp_url + endpoint, config);
     return respones;
   } catch (error) {
     console.log(error);
@@ -81,7 +103,7 @@ export async function createOrder(endpoint, data) {
     redirect: 'follow',
   };
   config.body = JSON.stringify(data);
-  console.log('config:',config);
+  console.log('config:', config);
   try {
     const respones = await fetch(base_url2 + endpoint + authParam, config);
     return respones;
@@ -91,14 +113,13 @@ export async function createOrder(endpoint, data) {
 }
 
 export async function getUser(token) {
-  let headers = new Headers({
-    'Content-Type': 'application/json',
-    Authoriztion: 'Bearer ' + token,
-  });
+  let headers = new Headers();
+  headers.append('Authorization', 'Bearer ' + String(token));
   let config = {
     headers: headers,
     mode: 'cors',
     method: 'GET',
+    redirect: 'follow',
   };
   console.log('getUser config: ', config);
   try {

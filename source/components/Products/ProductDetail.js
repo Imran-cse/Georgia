@@ -16,7 +16,13 @@ import ImageView from './ImageView';
 import ProductHeader from './ProductHeader';
 
 import Styles from './Style';
-import { fetchCartData, updateCart, getUserAsync } from '../../constants/constant_functions';
+import {
+  fetchCartData,
+  updateCart,
+  getUserAsync,
+  updateBrowsingHistory,
+  fetchBrowsingHistory,
+} from '../../constants/constant_functions';
 
 export default class ProductDetails extends Component {
   constructor(props) {
@@ -25,6 +31,7 @@ export default class ProductDetails extends Component {
       selectedImage: 0,
       selectedValue: 1,
       quantity: 1,
+      browsingHistory: {},
     };
 
     this.fetchCartData();
@@ -32,6 +39,8 @@ export default class ProductDetails extends Component {
 
   async fetchCartData() {
     await fetchCartData(this);
+    await fetchBrowsingHistory(this);
+    this.hadleBrowseData();
     const user = await getUserAsync();
     if (user) {
       this.setState({ user: JSON.parse(user) }, () => console.log('hello'));
@@ -47,6 +56,17 @@ export default class ProductDetails extends Component {
 
   componentWillUnmount() {
     this._unsubscribe();
+  }
+
+  async hadleBrowseData() {
+    const { route } = this.props;
+    const { product } = route.params;
+    const { browsingHistory } = this.state;
+
+    const { id } = product;
+    browsingHistory[id.toString()] = product;
+
+    await updateBrowsingHistory(browsingHistory, this);
   }
 
   async handleCart(product) {
@@ -73,7 +93,7 @@ export default class ProductDetails extends Component {
 
   render() {
     const { route, navigation } = this.props;
-    console.log(route);
+    // console.log(route);
     const { product, from } = route.params;
 
     const { selectedImage, selectedValue, quantity } = this.state;
@@ -132,7 +152,7 @@ export default class ProductDetails extends Component {
                 onPress={() => this.handleCart(product)}
                 title="ADD TO CART"
                 // buttonStyle={[Styles.cartButton, { paddingHorizontal: 10 }]}
-                buttonStyle={[Styles.buyBotton, {paddingHorizontal: 10}]}
+                buttonStyle={[Styles.buyBotton, { paddingHorizontal: 10 }]}
                 // titleStyle={{ color: 'black' }}
               />
 
