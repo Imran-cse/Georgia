@@ -42,6 +42,7 @@ export default class Home extends Component {
     this.state = {
       images: [],
       featuredProducts: [],
+      newProducts: [],
       searchText: undefined,
       showLoading: false,
       wishList: {},
@@ -54,6 +55,7 @@ export default class Home extends Component {
   componentDidMount() {
     this.fetchBanner();
     this.featuredProducts();
+    this.fetchNewProducts();
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       fetchWishlist(this);
       fetchCartData(this);
@@ -80,8 +82,14 @@ export default class Home extends Component {
     // console.log(JSON.stringify(data));
   }
 
+  async fetchNewProducts() {
+    const res = await getCategory('products?');
+    const result = await Promise.resolve(res.json());
+    this.setState({ newProducts: result });
+  }
+
   async fetchBanner() {
-    await fetch(base_url+'?search=banner&mime_type=image/png', config)
+    await fetch(base_url + '?search=banner&mime_type=image/png', config)
       .then(res => res.json())
       .then(data => {
         let tempImages = this.state.images;
@@ -145,6 +153,7 @@ export default class Home extends Component {
   render() {
     const {
       featuredProducts,
+      newProducts,
       isModalVisible,
       searchText,
       featureCatId,
@@ -179,7 +188,22 @@ export default class Home extends Component {
 
           {(featuredProducts.length > 0 && (
             <FeaturedProductSection
+              sectionHeader="Featured Products"
+              isFeature={true}
               products={featuredProducts}
+              navigation={this.props.navigation}
+              featureCatId={featureCatId}
+              wishList={wishList}
+              handleWishlist={this.handleWishlist.bind(this)}
+              updateState={this.updateState.bind(this)}
+            />
+          )) || <SpinView />}
+
+          {(newProducts.length > 0 && (
+            <FeaturedProductSection
+              sectionHeader="New Products"
+              isFeature={false}
+              products={newProducts}
               navigation={this.props.navigation}
               featureCatId={featureCatId}
               wishList={wishList}
