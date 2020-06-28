@@ -15,12 +15,14 @@ import AsyncStorage from '@react-native-community/async-storage';
 import SavedAddress from './SavedAddress';
 import ChekcoutSteps from './CheckoutSteps';
 import Header from '../Common/Header';
+import LocationMap from './MapView';
 import Styles from './Styles';
 import { coutriesJson } from '../../constants/countries';
 import {
   fetchAddress,
   updateAddress,
   moderateScale,
+  getUserAsync
 } from '../../constants/constant_functions';
 
 export default class Address extends Component {
@@ -39,6 +41,7 @@ export default class Address extends Component {
       address: {},
       savedAddresses: [],
       showSavedAddress: false,
+      showAddressSearch: false,
     };
 
     this.fetchAddress();
@@ -46,7 +49,14 @@ export default class Address extends Component {
 
   async fetchAddress() {
     await fetchAddress(this);
-
+    const res = await getUserAsync();
+    if (res !== null) {
+      let user = JSON.parse(res);
+      let firstName = user.name ? user.name.split(' ')[0] : undefined;
+      let lastName = user.name ? user.name.split(' ')[1] || undefined : undefined;
+      let email = user.email || undefined;
+      this.setState({ firstName, lastName, email }, () => console.log('hello'));
+    }
     // console.log(this.state.address);
     // this.setState({ ...this.state.address });
   }
@@ -225,6 +235,19 @@ export default class Address extends Component {
     }
   }
 
+  saveMapAddress(address) {
+    console.log(address);
+    address.addressComponents.map(item => {
+      console.log(item);
+    });
+    let street = address.addressComponents[0].name;
+    let city = address.addressComponents[1].name;
+    let state = address.addressComponents[2].name;
+    let country =
+      address.addressComponents[address.addressComponents.length - 1].name;
+    this.setState({ showAddressSearch: false, street, city, state, country });
+  }
+
   render() {
     const {
       firstName,
@@ -240,6 +263,7 @@ export default class Address extends Component {
       showSavedAddress,
       savedAddresses,
       address,
+      showAddressSearch,
     } = this.state;
 
     console.log('in render', this.state);
@@ -270,6 +294,10 @@ export default class Address extends Component {
           );
         }
       }
+    }
+
+    if (showAddressSearch) {
+      return <LocationMap saveMapAddress={this.saveMapAddress.bind(this)} />;
     }
 
     if (showSavedAddress) {
@@ -341,7 +369,13 @@ export default class Address extends Component {
 
             <View>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('LocationMap')}
+                onPress={() => {
+                  this.setState({
+                    showAddressSearch: true,
+                    showSavedAddress: false,
+                  });
+                  // this.props.navigation.navigate('LocationMap');
+                }}
                 style={Styles.searchView}>
                 <View style={{ paddingRight: 10 }}>
                   <Image
@@ -451,7 +485,7 @@ export default class Address extends Component {
               <Button
                 onPress={() => this.handleAddress()}
                 title="CONTINUE TO SHIPPING"
-                titleStyle={{fontSize: moderateScale(15)}}
+                titleStyle={{ fontSize: moderateScale(15) }}
                 buttonStyle={Styles.continueButton}
               />
             </View>
