@@ -20,7 +20,9 @@ export default class Categories extends Component {
   }
 
   async fetchCategories() {
-    const res = await getCategory(`products/categories?parent=0&per_page=100&`);
+    const res = await getCategory(
+      `products/categories?orderby=count&&parent=0&&hide_empty=true&per_page=100&`,
+    );
     const data = await Promise.resolve(res.json());
     const count = res.headers.get('X-WP-Total');
     if (data !== null) {
@@ -38,7 +40,7 @@ export default class Categories extends Component {
     if (!data || data.length < 1) {
       return (
         <View style={{ backgroundColor: 'white', flex: 1 }}>
-          <Header navigation={navigation} headerText='Categories' />
+          <Header navigation={navigation} headerText="Categories" />
           <SpinView />
         </View>
       );
@@ -46,7 +48,7 @@ export default class Categories extends Component {
 
     return (
       <View style={{ backgroundColor: 'white', flex: 1 }}>
-        <Header headerText='Categories' navigation={navigation} />
+        <Header headerText="Categories" navigation={navigation} />
 
         <View style={{ flex: 1, paddingTop: 10 }}>
           <FlatList
@@ -59,7 +61,7 @@ export default class Categories extends Component {
                   navigation.navigate('AllProductsView', {
                     endpoint: `products?category=${item.id}&per_page=${40}&`,
                     headText: item.name,
-                    categoryId: item.id
+                    categoryId: item.id,
                   })
                 }
                 style={Styles.itemContainer}>
