@@ -52,10 +52,10 @@ export default class OrderHistory extends Component {
         <View style={{ flex: 1, backgroundColor: 'white' }}>
           <Header headerText="My Orders" navigation={this.props.navigation} />
           <View style={Styles1.emptyImageContainer}>
-            <Image
+            {/* <Image
               source={require('../../assets/emptyOrder.png')}
               style={Styles.emptyHistoryImage}
-            />
+            /> */}
             <Text style={Styles1.emptyText}>No Purchase History</Text>
             <Text style={Styles.emptext}>Check back after your next shopping trip</Text>
           </View>

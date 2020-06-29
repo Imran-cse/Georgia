@@ -60,10 +60,10 @@ const CustomDrawerContent = props => {
           })
         }
       />
-      <DrawerItem
+      {/* <DrawerItem
         label="CUSTOMER SERVICE"
         onPress={() => props.navigation.navigate('Categories')}
-      />
+      /> */}
       <DrawerItem
         label="SALE"
         onPress={() =>
