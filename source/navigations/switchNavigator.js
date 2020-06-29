@@ -7,6 +7,7 @@ import Wishlisht from '../components/Wishlist/Wishlist';
 import Checkout from "../components/Checkout/Checkout";
 import OrderHistory from '../components/Account/OrderHistory';
 import {DrawerStack} from './drawerNavigator';
+import SplashScreen from '../components/Common/SplashScreen';
 
 const Stack = createStackNavigator();
 const options = { headerShown: false };
@@ -15,6 +16,7 @@ export const AppStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name='SplashScreen' component={SplashScreen} options={options} />
         <Stack.Screen name="App" component={DrawerStack} options={options} />
         <Stack.Screen name="Auth" component={AuthStack} options={options} />
         <Stack.Screen name='Wishlist' component={Wishlisht} options={options} />
