@@ -22,7 +22,7 @@ import {
   fetchAddress,
   updateAddress,
   moderateScale,
-  getUserAsync
+  getUserAsync,
 } from '../../constants/constant_functions';
 
 export default class Address extends Component {
@@ -53,7 +53,9 @@ export default class Address extends Component {
     if (res !== null) {
       let user = JSON.parse(res);
       let firstName = user.name ? user.name.split(' ')[0] : undefined;
-      let lastName = user.name ? user.name.split(' ')[1] || undefined : undefined;
+      let lastName = user.name
+        ? user.name.split(' ')[1] || undefined
+        : undefined;
       let email = user.email || undefined;
       this.setState({ firstName, lastName, email }, () => console.log('hello'));
     }
@@ -64,6 +66,7 @@ export default class Address extends Component {
   componentDidMount() {
     this._unsubscribe = this.props.navigation.addListener('focus', () => {
       fetchAddress(this);
+      this.fetchAddress();
     });
   }
 
@@ -237,15 +240,42 @@ export default class Address extends Component {
 
   saveMapAddress(address) {
     console.log(address);
+    let street = undefined;
+    let city = undefined;
+    let state = undefined;
+    let country = undefined;
+    let zipCode = undefined;
     address.addressComponents.map(item => {
       console.log(item);
+      if (item.types.includes('route') || item.types.includes('premise')) {
+        street = street ? street + ' ' + item.name : item.name;
+      } else if (item.types.includes('street_number')) {
+        street = item.name;
+      } else if (item.types.includes('neighborhood')) {
+        street = street ? street + ', ' + item.name : item.name;
+      } else if (item.types.includes('country')) {
+        country = item.name;
+      } else if (item.types.includes('administrative_area_level_1')) {
+        state = item.name;
+      } else if (item.types.includes('administrative_area_level_2')) {
+        city = item.name;
+      } else if (item.types.includes('locality')) {
+        city = item.name;
+      } else if (item.types.includes('postal_code')) {
+        zipCode = item.name;
+      }
     });
-    let street = address.addressComponents[0].name;
-    let city = address.addressComponents[1].name;
-    let state = address.addressComponents[2].name;
-    let country =
-      address.addressComponents[address.addressComponents.length - 1].name;
-    this.setState({ showAddressSearch: false, street, city, state, country });
+    if (street === undefined) {
+      street = address.addressComponents[0].name
+    }
+    this.setState({
+      showAddressSearch: false,
+      street,
+      city,
+      state,
+      country,
+      zipCode,
+    });
   }
 
   render() {
