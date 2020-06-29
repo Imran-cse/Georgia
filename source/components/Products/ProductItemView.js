@@ -26,7 +26,7 @@ const ProductItemView = props => {
       </TouchableOpacity>
       <View style={{ flexDirection: 'row' }}>
         <View style={{ flex: 8, alignItems: 'flex-start' }}>
-          <Text numberOfLines={2}>{item.name}</Text>
+          <Text numberOfLines={3}>{item.name}</Text>
           <Text style={Styles.price}>$ {item.price}</Text>
           <Rating readonly startingValue={rating} imageSize={10} />
         </View>
